@@ -11,7 +11,8 @@ import org.springframework.context.annotation.Import;
  */
 @Configuration
 @Import({
-        PropertyConfig.class
+        PropertyConfig.class,
+        SecurityConfig.class
 })
 public class WebAppConfig {
 }
