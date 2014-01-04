@@ -1,10 +1,6 @@
 package com.ditzel.server.config;
 
-import org.springframework.web.WebApplicationInitializer;
-import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
-
-import javax.servlet.ServletContext;
-import javax.servlet.ServletException;
+import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 
 /**
  * Class to replace web.xml for web application initialization.
@@ -12,10 +8,20 @@ import javax.servlet.ServletException;
  * @author Allan Ditzel
  * @since 1.0
  */
-public class WebappInitializer implements WebApplicationInitializer {
+public class WebappInitializer extends AbstractAnnotationConfigDispatcherServletInitializer {
+
     @Override
-    public void onStartup(ServletContext servletContext) throws ServletException {
-        AnnotationConfigWebApplicationContext context = new AnnotationConfigWebApplicationContext();
-        context.register(WebAppConfig.class);
+    protected String[] getServletMappings() {
+        return new String[] { "/" };
+    }
+
+    @Override
+    protected Class<?>[] getRootConfigClasses() {
+        return new Class[] { WebAppConfig.class };
+    }
+
+    @Override
+    protected Class<?>[] getServletConfigClasses() {
+        return new Class[] { WebAppConfig.class };
     }
 }
