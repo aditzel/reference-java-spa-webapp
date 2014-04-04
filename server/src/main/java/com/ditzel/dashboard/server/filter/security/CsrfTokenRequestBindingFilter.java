@@ -1,4 +1,4 @@
-package com.ditzel.kpi.server.filter.security;
+package com.ditzel.dashboard.server.filter.security;
 
 import org.springframework.security.web.csrf.CsrfToken;
 import org.springframework.web.filter.OncePerRequestFilter;

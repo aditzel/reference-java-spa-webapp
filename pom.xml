@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.ditzel</groupId>
-    <artifactId>achievement-webapp</artifactId>
+    <artifactId>dashboard-webapp</artifactId>
     <version>develop-SNAPSHOT</version>
     <modules>
         <module>common</module>
@@ -13,7 +13,7 @@
     </modules>
     <packaging>pom</packaging>
 
-    <name>Achievement Webapp :: Root</name>
+    <name>Dashboard Webapp :: Root</name>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

@@ -1,4 +1,4 @@
-package com.ditzel.kpi.server.config;
+package com.ditzel.dashboard.server.config;
 
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 

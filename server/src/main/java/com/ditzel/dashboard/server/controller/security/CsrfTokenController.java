@@ -1,6 +1,5 @@
-package com.ditzel.kpi.server.controller.security;
+package com.ditzel.dashboard.server.controller.security;
 
-import org.springframework.security.web.csrf.CsrfToken;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
