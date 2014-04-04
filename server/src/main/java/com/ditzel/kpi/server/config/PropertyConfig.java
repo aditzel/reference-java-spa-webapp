@@ -1,4 +1,4 @@
-package com.ditzel.server.config;
+package com.ditzel.kpi.server.config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;

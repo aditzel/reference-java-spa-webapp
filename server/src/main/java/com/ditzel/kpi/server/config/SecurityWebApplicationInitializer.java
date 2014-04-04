@@ -1,10 +1,10 @@
-package com.ditzel.server.config;
+package com.ditzel.kpi.server.config;
 
 import org.springframework.security.web.context.AbstractSecurityWebApplicationInitializer;
 
 /**
  * Web application initializer that sets up the filter chain in order for spring security to intercept incoming requests.
- * Works in conjunctins with {@link com.ditzel.server.config.WebappInitializer}.
+ * Works in conjunctin with {@link com.ditzel.kpi.server.config.WebappInitializer}.
  *
  * @author Allan Ditzel
  * @since 1.0

@@ -22,10 +22,11 @@
 
 <div class="container">
 
-    <form class="form-signin" role="form">
+    <form class="form-signin" role="form" method="post">
         <h2 class="form-signin-heading">Please sign in</h2>
-        <input type="text" class="form-control" placeholder="Email address" required autofocus>
-        <input type="password" class="form-control" placeholder="Password" required>
+        <input type="text" class="form-control" placeholder="Email address" required autofocus name="username">
+        <input type="password" class="form-control" placeholder="Password" required name="password">
+        <input type="hidden" name="_csrf" value="">
         <label class="checkbox">
             <input type="checkbox" value="remember-me"> Remember me
         </label>
@@ -34,5 +35,23 @@
 
 </div> <!-- /container -->
 
+<script src="/assets/js/jquery-2.0.3.min.js"></script>
+<script src="/assets/bootstrap/js/bootstrap.min.js"></script>
+
+<script>
+    $(function() {
+        $.ajax({
+            type: 'HEAD',
+            url: '/security/csrf',
+            success: function(response) {
+                alert(response.getAllResponseHeaders());
+            },
+            error: function(response) {
+                console.log("There was an error accessing the CSRF end point.");
+                $('input').disable();
+            }
+        })
+    });
+</script>
 </body>
 </html>

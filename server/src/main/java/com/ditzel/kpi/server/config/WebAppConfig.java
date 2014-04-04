@@ -1,5 +1,6 @@
-package com.ditzel.server.config;
+package com.ditzel.kpi.server.config;
 
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.web.servlet.config.annotation.DefaultServletHandlerConfigurer;
@@ -19,6 +20,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
         SecurityConfig.class
 })
 @EnableWebMvc
+@ComponentScan(basePackages = {"com.ditzel.kpi.server.controller.security"})
 public class WebAppConfig extends WebMvcConfigurerAdapter {
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
