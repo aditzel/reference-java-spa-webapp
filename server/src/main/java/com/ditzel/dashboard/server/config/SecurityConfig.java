@@ -38,7 +38,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .addFilterAfter(csrfTokenRequestBindingFilter, ClientFingerprintSessionBindingFilter.class)
                 .authorizeRequests()
                     .antMatchers("/assets/**").permitAll()
-                    .antMatchers("/security/csrf").permitAll()
                     .antMatchers("/*.html").authenticated()
                     .anyRequest().authenticated()
                     .and()

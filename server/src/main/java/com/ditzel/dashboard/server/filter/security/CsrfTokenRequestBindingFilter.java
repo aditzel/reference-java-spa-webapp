@@ -19,16 +19,17 @@ public class CsrfTokenRequestBindingFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        HttpSession httpSession = request.getSession();
-        CsrfToken requestCsrfToken = (CsrfToken) request.getAttribute(Constants.CSRF_TOKEN_REQUEST_KEY);
-        CsrfToken sessionCsrfToken = (CsrfToken) httpSession.getAttribute(Constants.CSRF_TOKEN_REQUEST_KEY);
+        HttpSession session = request.getSession();
+        CsrfToken requestCsrfToken = (CsrfToken) request.getAttribute(Constants.CSRF_TOKEN_KEY);
+        CsrfToken sessionCsrfToken = (CsrfToken) session.getAttribute(Constants.CSRF_TOKEN_KEY);
 
         if (requestCsrfToken == null && sessionCsrfToken != null) {
             requestCsrfToken = sessionCsrfToken;
-            httpSession.setAttribute(Constants.CSRF_TOKEN_REQUEST_KEY, requestCsrfToken);
+        } else if (requestCsrfToken != null && sessionCsrfToken == null) {
+            session.setAttribute(Constants.CSRF_TOKEN_KEY, requestCsrfToken);
         }
 
-        if (requestCsrfToken != null && httpSession != null) {
+        if (requestCsrfToken != null) {
             response.setHeader(requestCsrfToken.getHeaderName(), requestCsrfToken.getToken());
         }
 

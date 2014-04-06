@@ -35,12 +35,12 @@ public class HttpClientFingerprintHasherTest {
 
     @Test
     public void handlesRequestsWithNoUserAgent() {
-        when(request.getHeader(Constants.USER_AGENT_HEADER_NAME)).thenReturn(null);
+        when(request.getHeader(Constants.USER_AGENT_HEADER)).thenReturn(null);
         when(request.getRemoteAddr()).thenReturn(null);
 
         assertNull(hasher.fingerprintClient(request));
 
-        verify(request).getHeader(Constants.USER_AGENT_HEADER_NAME);
+        verify(request).getHeader(Constants.USER_AGENT_HEADER);
         verify(request).getRemoteAddr();
     }
 
@@ -50,7 +50,7 @@ public class HttpClientFingerprintHasherTest {
         String remoteAddress = "Remote-Address";
         String expectedHashedFingerprint = DigestUtils.md5Hex(userAgent + HttpClientFingerprintHasher.DELIMETER + remoteAddress);
 
-        when(request.getHeader(Constants.USER_AGENT_HEADER_NAME)).thenReturn(userAgent);
+        when(request.getHeader(Constants.USER_AGENT_HEADER)).thenReturn(userAgent);
         when(request.getRemoteAddr()).thenReturn(remoteAddress);
 
         String computedHashedFingerprint = hasher.fingerprintClient(request);
@@ -58,7 +58,7 @@ public class HttpClientFingerprintHasherTest {
         assertNotNull(computedHashedFingerprint);
         assertEquals(expectedHashedFingerprint, computedHashedFingerprint);
 
-        verify(request).getHeader(Constants.USER_AGENT_HEADER_NAME);
+        verify(request).getHeader(Constants.USER_AGENT_HEADER);
         verify(request).getRemoteAddr();
     }
 }
