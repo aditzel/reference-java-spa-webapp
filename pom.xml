@@ -26,6 +26,7 @@
         <logback.version>1.0.13</logback.version>
         <spring.data.couchbase.version>1.0.0.M2</spring.data.couchbase.version>
         <spring.security.version>3.2.0.RELEASE</spring.security.version>
+        <commons.codec.version>1.9</commons.codec.version>
     </properties>
 
     <dependencyManagement>
@@ -96,6 +97,16 @@
                 <groupId>org.springframework.security</groupId>
                 <artifactId>spring-security-config</artifactId>
                 <version>${spring.security.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-test</artifactId>
+                <version>${spring.security.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>commons-codec</groupId>
+                <artifactId>commons-codec</artifactId>
+                <version>${commons.codec.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

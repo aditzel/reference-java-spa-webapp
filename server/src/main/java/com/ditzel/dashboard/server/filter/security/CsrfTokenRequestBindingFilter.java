@@ -1,5 +1,6 @@
 package com.ditzel.dashboard.server.filter.security;
 
+import com.ditzel.dashboard.server.Constants;
 import org.springframework.security.web.csrf.CsrfToken;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -15,12 +16,12 @@ import java.io.IOException;
  * headers if the Spring {@link org.springframework.security.web.csrf.CsrfFilter} has placed one in the {@link javax.servlet.http.HttpServletRequest}.
  */
 public class CsrfTokenRequestBindingFilter extends OncePerRequestFilter {
-    private static final String CSRF_TOKEN_REQUEST_KEY = "_csrf";
+
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         HttpSession httpSession = request.getSession(false);
-        CsrfToken csrfToken = (CsrfToken) request.getAttribute(CSRF_TOKEN_REQUEST_KEY);
+        CsrfToken csrfToken = (CsrfToken) request.getAttribute(Constants.CSRF_TOKEN_REQUEST_KEY);
 
         if (csrfToken != null && httpSession != null) {
             response.setHeader(csrfToken.getHeaderName(), csrfToken.getToken());
