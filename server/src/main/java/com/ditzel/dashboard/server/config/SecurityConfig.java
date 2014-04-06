@@ -45,7 +45,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .formLogin()
                     .loginPage("/index.html")
                     .defaultSuccessUrl("/home.html", true)
-                    .permitAll();
+                    .permitAll()
+                    .and()
+                .logout()
+                    .logoutUrl("/logout")
+                    .logoutSuccessUrl("/index.html");
     }
 
     @Bean
