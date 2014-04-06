@@ -9,9 +9,9 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>common</artifactId>
+    <artifactId>eis-impl</artifactId>
 
-    <name>Dashboard Webapp :: Common</name>
+    <name>Dashboard Webapp :: EIS Impl</name>
 
     <packaging>jar</packaging>
 

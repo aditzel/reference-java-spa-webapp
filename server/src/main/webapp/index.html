@@ -1,9 +1,62 @@
+
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Default Index</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="shortcut icon" href="/assets/img/favicon.ico">
+
+    <title>Log In</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="/assets/bootstrap/css/bootstrap.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="/assets/css/index.css" rel="stylesheet">
 </head>
+
 <body>
-<h1>Look Ma, I'm on the web!!! WEEEEEEEEEEE!!!</h1>
+
+<div class="container">
+
+    <form class="form-signin" role="form" method="post">
+        <h2 class="form-signin-heading">Please sign in</h2>
+        <input type="text" class="form-control" placeholder="Email address" required autofocus name="username">
+        <input type="password" class="form-control" placeholder="Password" required name="password">
+        <input type="hidden" id="_csrf" name="_csrf" value="">
+        <label class="checkbox">
+            <input type="checkbox" value="remember-me"> Remember me
+        </label>
+        <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+    </form>
+
+</div> <!-- /container -->
+
+<script src="/assets/js/jquery-2.0.3.min.js"></script>
+<script src="/assets/bootstrap/js/bootstrap.min.js"></script>
+
+<script>
+    $(function() {
+        console.log("Fetching CSRF Token Manually");
+        $.ajax({
+            type: 'HEAD',
+            url: '/',
+            complete: function(xhr, status) {
+                if (xhr) {
+                    var csrfToken = xhr.getResponseHeader("X-CSRF-TOKEN");
+                    console.log("Setting token on form: " + csrfToken, xhr.getAllResponseHeaders(), status);
+                    $('#_csrf').val(csrfToken);
+                }
+            },
+            error: function(xhr, status) {
+                console.log("There was an error accessing the CSRF end point.");
+                $('input').disable();
+            }
+        })
+    });
+</script>
 </body>
 </html>

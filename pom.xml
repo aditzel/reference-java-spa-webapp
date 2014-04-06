@@ -3,28 +3,54 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.ditzel</groupId>
-    <artifactId>achievement-webapp</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <artifactId>dashboard-webapp</artifactId>
+    <version>0.1</version>
     <modules>
-        <module>server</module>
         <module>common</module>
+        <module>eis-api</module>
+        <module>eis-impl</module>
+        <module>server</module>
     </modules>
     <packaging>pom</packaging>
 
-    <name>Achievement Webapp :: Root</name>
+    <name>Dashboard Webapp :: Root</name>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <junit.version>4.11</junit.version>
-        <spring.version>4.0.0.RC1</spring.version>
+        <mockito.version>1.9.5</mockito.version>
+        <spring.version>4.0.0.RELEASE</spring.version>
         <cglib.version>2.2.2</cglib.version>
         <maven.compiler.plugin.version>3.1</maven.compiler.plugin.version>
         <jrebel.plugin.version>1.1.5</jrebel.plugin.version>
         <logback.version>1.0.13</logback.version>
+        <spring.data.couchbase.version>1.0.0.M2</spring.data.couchbase.version>
+        <spring.security.version>3.2.0.RELEASE</spring.security.version>
+        <commons.codec.version>1.9</commons.codec.version>
     </properties>
 
     <dependencyManagement>
         <dependencies>
+            <dependency>
+                <groupId>com.ditzel</groupId>
+                <artifactId>common</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.ditzel</groupId>
+                <artifactId>eis-api</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.ditzel</groupId>
+                <artifactId>eis-impl</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.ditzel</groupId>
+                <artifactId>server</artifactId>
+                <version>${project.version}</version>
+            </dependency>
             <dependency>
                 <groupId>org.springframework</groupId>
                 <artifactId>spring-context</artifactId>
@@ -47,9 +73,40 @@
                 <scope>test</scope>
             </dependency>
             <dependency>
+                <groupId>org.mockito</groupId>
+                <artifactId>mockito-all</artifactId>
+                <version>${mockito.version}</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
                 <groupId>ch.qos.logback</groupId>
                 <artifactId>logback-classic</artifactId>
                 <version>${logback.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.data</groupId>
+                <artifactId>spring-data-couchbase</artifactId>
+                <version>${spring.data.couchbase.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.security</groupId>
+                <artifactId>spring-security-web</artifactId>
+                <version>${spring.security.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.security</groupId>
+                <artifactId>spring-security-config</artifactId>
+                <version>${spring.security.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-test</artifactId>
+                <version>${spring.security.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>commons-codec</groupId>
+                <artifactId>commons-codec</artifactId>
+                <version>${commons.codec.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
@@ -62,6 +119,10 @@
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-all</artifactId>
         </dependency>
     </dependencies>
 
