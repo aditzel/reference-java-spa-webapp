@@ -4,7 +4,6 @@ import com.ditzel.dashboard.server.Constants;
 import org.apache.commons.codec.digest.DigestUtils;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 /**
  * Created by Allan on 4/5/2014.

@@ -26,7 +26,7 @@
         <h2 class="form-signin-heading">Please sign in</h2>
         <input type="text" class="form-control" placeholder="Email address" required autofocus name="username">
         <input type="password" class="form-control" placeholder="Password" required name="password">
-        <input type="hidden" name="_csrf" value="">
+        <input type="hidden" id="_csrf" name="_csrf" value="">
         <label class="checkbox">
             <input type="checkbox" value="remember-me"> Remember me
         </label>
@@ -40,13 +40,18 @@
 
 <script>
     $(function() {
+        console.log("Fetching CSRF Token Manually");
         $.ajax({
             type: 'HEAD',
-            url: '/security/csrf',
-            success: function(response) {
-                alert(response.getAllResponseHeaders());
+            url: '/',
+            complete: function(xhr, status) {
+                if (xhr) {
+                    var csrfToken = xhr.getResponseHeader("X-CSRF-TOKEN");
+                    console.log("Setting token on form: " + csrfToken, xhr.getAllResponseHeaders(), status);
+                    $('#_csrf').val(csrfToken);
+                }
             },
-            error: function(response) {
+            error: function(xhr, status) {
                 console.log("There was an error accessing the CSRF end point.");
                 $('input').disable();
             }

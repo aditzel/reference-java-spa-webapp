@@ -1,7 +1,10 @@
 package com.ditzel.dashboard.server.config;
 
+import com.ditzel.dashboard.server.filter.security.ClientFingerprintSessionBindingFilter;
 import com.ditzel.dashboard.server.filter.security.CsrfTokenRequestBindingFilter;
+import com.ditzel.dashboard.server.security.HttpClientFingerprintHasher;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -27,8 +30,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
+        CsrfTokenRequestBindingFilter csrfTokenRequestBindingFilter = csrfTokenRequestBindingFilter();
+        ClientFingerprintSessionBindingFilter clientFingerprintSessionBindingFilter = clientFingerprintSessionBindingFilter();
+
         http
-                .addFilterAfter(new CsrfTokenRequestBindingFilter(), CsrfFilter.class)
+                .addFilterAfter(clientFingerprintSessionBindingFilter, CsrfFilter.class)
+                .addFilterAfter(csrfTokenRequestBindingFilter, ClientFingerprintSessionBindingFilter.class)
                 .authorizeRequests()
                     .antMatchers("/assets/**").permitAll()
                     .antMatchers("/security/csrf").permitAll()
@@ -37,6 +44,22 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                     .and()
                 .formLogin()
                     .loginPage("/index.html")
+                    .defaultSuccessUrl("/home.html", true)
                     .permitAll();
+    }
+
+    @Bean
+    public CsrfTokenRequestBindingFilter csrfTokenRequestBindingFilter() {
+         return new CsrfTokenRequestBindingFilter();
+    }
+
+    @Bean
+    public ClientFingerprintSessionBindingFilter clientFingerprintSessionBindingFilter() {
+        return new ClientFingerprintSessionBindingFilter();
+    }
+
+    @Bean
+    public HttpClientFingerprintHasher httpClientFingerprintHasher() {
+        return new HttpClientFingerprintHasher();
     }
 }

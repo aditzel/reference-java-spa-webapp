@@ -14,10 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 public class CsrfTokenController {
     private static final String DEFAULT_CSRF_HEADER_NAME = "X-CSRF-TOKEN";
 
-    @RequestMapping(value = "/security/csrf", method = RequestMethod.HEAD)
+    @RequestMapping(value = "/security/csrf", method = RequestMethod.GET)
     public void getCsrfToken(HttpServletRequest request, HttpServletResponse response) {
-        if (!request.getHeader("referer").endsWith("/index.html")) {
-            response.setHeader(DEFAULT_CSRF_HEADER_NAME, "");
-        }
     }
 }

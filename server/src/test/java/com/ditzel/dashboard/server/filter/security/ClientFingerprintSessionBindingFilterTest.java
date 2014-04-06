@@ -50,12 +50,12 @@ public class ClientFingerprintSessionBindingFilterTest {
 
     @Test
     public void doNothingIfNoSessionFound() throws ServletException, IOException {
-        when(request.getSession(false)).thenReturn(null);
+        when(request.getSession()).thenReturn(null);
 
         filter.doFilterInternal(request, response, filterChain);
 
         verifyZeroInteractions(httpClientFingerprintHasher, response);
-        verify(request).getSession(false);
+        verify(request).getSession();
         verify(filterChain).doFilter(request, response);
         verifyNoMoreInteractions(request);
     }
@@ -64,13 +64,13 @@ public class ClientFingerprintSessionBindingFilterTest {
     public void setFingerprintIfNotFoundInSession() throws ServletException, IOException {
         String fingerprint = "fingerprint";
 
-        when(request.getSession(false)).thenReturn(session);
+        when(request.getSession()).thenReturn(session);
         when(httpClientFingerprintHasher.fingerprintClient(request)).thenReturn(fingerprint);
         when(session.getAttribute(Constants.USER_AGENT_FINGERPRINT)).thenReturn(null);
 
         filter.doFilterInternal(request, response, filterChain);
 
-        verify(request).getSession(false);
+        verify(request).getSession();
         verify(session).getAttribute(Constants.USER_AGENT_FINGERPRINT);
         verify(session).setAttribute(Constants.USER_AGENT_FINGERPRINT, fingerprint);
         verify(filterChain).doFilter(request, response);
@@ -82,13 +82,13 @@ public class ClientFingerprintSessionBindingFilterTest {
         String fingerprint = "fingerprint";
         String storedFingerprint = "storedFingerprint";
 
-        when(request.getSession(false)).thenReturn(session);
+        when(request.getSession()).thenReturn(session);
         when(httpClientFingerprintHasher.fingerprintClient(request)).thenReturn(fingerprint);
         when(session.getAttribute(Constants.USER_AGENT_FINGERPRINT)).thenReturn(storedFingerprint);
 
         filter.doFilterInternal(request, response, filterChain);
 
-        verify(request).getSession(false);
+        verify(request).getSession();
         verify(session).getAttribute(Constants.USER_AGENT_FINGERPRINT);
         verify(filterChain).doFilter(request, response);
         verifyNoMoreInteractions(request, session);

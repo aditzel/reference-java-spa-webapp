@@ -17,14 +17,19 @@ import java.io.IOException;
  */
 public class CsrfTokenRequestBindingFilter extends OncePerRequestFilter {
 
-
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        HttpSession httpSession = request.getSession(false);
-        CsrfToken csrfToken = (CsrfToken) request.getAttribute(Constants.CSRF_TOKEN_REQUEST_KEY);
+        HttpSession httpSession = request.getSession();
+        CsrfToken requestCsrfToken = (CsrfToken) request.getAttribute(Constants.CSRF_TOKEN_REQUEST_KEY);
+        CsrfToken sessionCsrfToken = (CsrfToken) httpSession.getAttribute(Constants.CSRF_TOKEN_REQUEST_KEY);
 
-        if (csrfToken != null && httpSession != null) {
-            response.setHeader(csrfToken.getHeaderName(), csrfToken.getToken());
+        if (requestCsrfToken == null && sessionCsrfToken != null) {
+            requestCsrfToken = sessionCsrfToken;
+            httpSession.setAttribute(Constants.CSRF_TOKEN_REQUEST_KEY, requestCsrfToken);
+        }
+
+        if (requestCsrfToken != null && httpSession != null) {
+            response.setHeader(requestCsrfToken.getHeaderName(), requestCsrfToken.getToken());
         }
 
         filterChain.doFilter(request, response);
