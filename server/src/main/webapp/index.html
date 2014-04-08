@@ -1,13 +1,12 @@
 
 <!DOCTYPE html>
-<html lang="en" ng-app>
+<html lang="en" ng-app="LoginApp">
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="">
     <meta name="author" content="">
-    <link rel="shortcut icon" href="/assets/img/favicon.ico">
 
     <title>Log In</title>
 
@@ -16,45 +15,29 @@
 
     <!-- Custom styles for this template -->
     <link href="/assets/css/index.css" rel="stylesheet">
+
+    <script src="/assets/js/jquery-2.0.3.min.js" type="text/javascript"></script>
+    <script src="/assets/js/angular.min.js" type="text/javascript"></script>
+    <script src="/assets/js/LoginApp/LoginApp.js" language="JavaScripts" type="text/javascript"></script>
+    <script src="/assets/js/LoginApp/LoginController.js" type="text/javascript"></script>
 </head>
 
 <body>
 
-<div class="container">
+<!--<div class="container" ng-app="LoginApp" ng-controller="LoginController">-->
+<div class="container" ng-controller="LoginController" ng-init="init()">
 
-    <form class="form-signin" role="form" method="post">
+    <form class="form-signin" role="form" method="post" name="loginForm" ng-submit="login()">
         <h2 class="form-signin-heading">Please sign in</h2>
-        <input type="text" class="form-control" placeholder="Email address" required autofocus name="username">
-        <input type="password" class="form-control" placeholder="Password" required name="password">
-        <input type="hidden" id="_csrf" name="_csrf" value="">
+        <input type="text" class="form-control" placeholder="Username" required autofocus ng-model="formData.username"> [{{formData.username}}]
+        <input type="password" class="form-control" placeholder="Password" required ng-model="formData.password"> [{{formData.password}}]
+        <input type="hidden" id="_csrf" ng-model="formData._csrf" value=""> [{{formData._csrf}}]
         <label class="checkbox">
             <input type="checkbox" value="remember-me"> Remember me
         </label>
-        <p>1 + 2 = {{ 1 + 2 }}</p>
         <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
     </form>
 
 </div> <!-- /container -->
-
-<script src="/assets/js/angular.min.js"></script>
-<script src="/assets/js/jquery-2.0.3.min.js"></script>
-<script src="/assets/bootstrap/js/bootstrap.min.js"></script>
-
-<script>
-    $(function() {
-        console.log("Fetching CSRF Token Manually");
-        $.ajax({
-            type: 'HEAD',
-            url: '/',
-            complete: function(xhr, status) {
-                if (xhr) {
-                    var csrfToken = xhr.getResponseHeader("X-CSRF-TOKEN");
-                    console.log("Setting token on form: " + csrfToken, xhr.getAllResponseHeaders(), status);
-                    $('#_csrf').val(csrfToken);
-                }
-            }
-        })
-    });
-</script>
 </body>
 </html>
