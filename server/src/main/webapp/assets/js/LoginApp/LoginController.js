@@ -7,36 +7,19 @@ loginApp.controller("LoginController", function($scope, $http) {
 
                 var csrfToken =  headers("X-CSRF-TOKEN");
 
-                $http.post('/index.html', {
-                    'username': $scope.formData.username,
-                    'password': $scope.formData.password
-                }, {
+                $http.post('/index.html', 'username='+$scope.formData.username+'&password='+$scope.formData.password, {
                     headers: {
                         'X-CSRF-TOKEN': csrfToken,
-                        'X-REQUESTED-WITH': 'XMLHttpRequest'
+                        'X-REQUESTED-WITH': 'XMLHttpRequest',
+                        'CONTENT-TYPE': 'application/x-www-form-urlencoded'
                     }
                 })
-                    .success(function (data, status) {
-                        console.log("Success!!!", data, status);
-                    })
-                    .error(function (data, status) {
-                        console.log("Failure!!!!", data, status);
-                    });
+                .success(function (data, status) {
+                    window.location.href = '/home.html';
+                })
+                .error(function (data, status) {
+                    $scope.errorMessage = "Incorrect username or password.";
+                });
         });
-    }
-
-    $scope.init = function($http) {
-        console.log("Login controller init", arguments);
-
-        $.ajax({
-            type: 'HEAD',
-            url: '/',
-            complete: function (xhr, status) {
-                if (xhr) {
-                    $scope.formData._csrf = xhr.getResponseHeader("X-CSRF-TOKEN");
-                }
-            }
-        })
-
     }
 });

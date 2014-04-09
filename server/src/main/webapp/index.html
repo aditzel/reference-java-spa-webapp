@@ -24,17 +24,16 @@
 
 <body>
 
-<!--<div class="container" ng-app="LoginApp" ng-controller="LoginController">-->
 <div class="container" ng-controller="LoginController">
 
     <form class="form-signin" role="form" method="post" name="loginForm" ng-submit="login()">
-        <h2 class="form-signin-heading">Please sign in</h2>
-        <input type="text" class="form-control" placeholder="Username" required autofocus ng-model="formData.username"> [{{formData.username}}]
-        <input type="password" class="form-control" placeholder="Password" required ng-model="formData.password"> [{{formData.password}}]
-        <input type="hidden" id="_csrf" ng-model="formData._csrf" value=""> [{{formData._csrf}}]
-        <label class="checkbox">
-            <input type="checkbox" value="remember-me"> Remember me
-        </label>
+        <h2 class="form-signin-heading">None Shall Pass!</h2>
+        <div id="messages" class="alert alert-danger" ng-show="errorMessage">{{errorMessage}}</div>
+        <div class="form-group" ng-class="{has-error: errorMessage}">
+            <input type="text" class="form-control" placeholder="Username" required autofocus name="username" ng-model="formData.username">
+        </div>
+        <input type="password" class="form-control" placeholder="Password" name="password" required ng-model="formData.password">
+        <input type="hidden" id="_csrf" name="_csrf" ng-model="formData._csrf">
         <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
     </form>
 
