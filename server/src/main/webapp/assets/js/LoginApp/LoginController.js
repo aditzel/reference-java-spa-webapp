@@ -18,7 +18,11 @@ loginApp.controller("LoginController", function($scope, $http) {
                     window.location.href = '/home.html';
                 })
                 .error(function (data, status) {
-                    $scope.errorMessage = "Incorrect username or password.";
+                    if (status == 401) {
+                        $scope.errorMessage = "Incorrect username or password.";
+                    } else {
+                        $scope.errorMessage = "Error attempting to log in. Please try again later.";
+                    }
                 });
         });
     }
