@@ -18,7 +18,7 @@ public class HttpClientFingerprintHasher {
             throw new IllegalArgumentException("Request cannot be null");
         }
 
-        String userAgent = request.getHeader(Constants.USER_AGENT_HEADER_NAME);
+        String userAgent = request.getHeader(Constants.USER_AGENT_HEADER);
         String remoteAddress = request.getRemoteAddr();
 
         if (userAgent != null && !userAgent.isEmpty() && remoteAddress != null && !remoteAddress.isEmpty()) {

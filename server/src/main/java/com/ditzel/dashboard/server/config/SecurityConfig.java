@@ -10,6 +10,7 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
 import org.springframework.security.web.csrf.CsrfFilter;
 
 /**
@@ -36,16 +37,25 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .addFilterAfter(clientFingerprintSessionBindingFilter, CsrfFilter.class)
                 .addFilterAfter(csrfTokenRequestBindingFilter, ClientFingerprintSessionBindingFilter.class)
+                .headers()
+                    .cacheControl()
+                    .xssProtection()
+                    .and()
                 .authorizeRequests()
                     .antMatchers("/assets/**").permitAll()
-                    .antMatchers("/security/csrf").permitAll()
                     .antMatchers("/*.html").authenticated()
                     .anyRequest().authenticated()
                     .and()
                 .formLogin()
                     .loginPage("/index.html")
                     .defaultSuccessUrl("/home.html", true)
-                    .permitAll();
+                    .failureHandler(new SimpleUrlAuthenticationFailureHandler())
+                    .permitAll()
+                    .and()
+                .logout()
+                    .logoutUrl("/logout")
+                    .logoutSuccessUrl("/index.html")
+                    .invalidateHttpSession(true);
     }
 
     @Bean
