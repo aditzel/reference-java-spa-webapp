@@ -55,7 +55,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .logout()
                     .logoutUrl("/logout")
                     .logoutSuccessUrl("/index.html")
-                    .invalidateHttpSession(true);
+                    .invalidateHttpSession(true)
+                    .and()
+                .requiresChannel()
+                    .anyRequest().requiresSecure();
     }
 
     @Bean
