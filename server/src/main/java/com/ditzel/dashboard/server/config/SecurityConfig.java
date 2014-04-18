@@ -3,9 +3,13 @@ package com.ditzel.dashboard.server.config;
 import com.ditzel.dashboard.server.filter.security.ClientFingerprintSessionBindingFilter;
 import com.ditzel.dashboard.server.filter.security.CsrfTokenRequestBindingFilter;
 import com.ditzel.dashboard.server.security.HttpClientFingerprintHasher;
+import com.stormpath.sdk.client.Client;
+import com.stormpath.spring.security.client.ClientFactory;
+import com.stormpath.spring.security.provider.StormpathAuthenticationProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.env.Environment;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -22,11 +26,15 @@ import org.springframework.security.web.csrf.CsrfFilter;
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
+    private static String USER_ROLE = "https://api.stormpath.com/v1/groups/70f4Mm3bMyCc9Z8ocCMisp";
+    private static String ADMIN_ROLE = "https://api.stormpath.com/v1/groups/6hKi5x6hBS2uZ36jLwSN8R";
+
+    @Autowired
+    Environment env;
+
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-        auth
-                .inMemoryAuthentication()
-                .withUser("user").password("password").roles("USER");
+        auth.authenticationProvider(stormpathAuthenticationProvider());
     }
 
     @Override
@@ -48,7 +56,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                     .antMatchers("/assets/js/jquery/**").permitAll()
                     .antMatchers("/assets/js/LoginApp/**").permitAll()
                     .antMatchers("/assets/js/DashboardApp/**").authenticated()
-                    .antMatchers("/*.html").authenticated()
                     .anyRequest().authenticated()
                     .and()
                 .formLogin()
@@ -79,5 +86,25 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean
     public HttpClientFingerprintHasher httpClientFingerprintHasher() {
         return new HttpClientFingerprintHasher();
+    }
+
+    @Bean
+    public Client stormpathClient() throws Exception {
+        ClientFactory clientFactory = new ClientFactory();
+
+        clientFactory.setApiKeyFileLocation(System.getProperty("user.home") + "/.stormpath/apiKey.properties");
+
+        return clientFactory.getClientBuilder().build();
+    }
+
+    @Bean
+    public StormpathAuthenticationProvider stormpathAuthenticationProvider() throws Exception {
+        StormpathAuthenticationProvider stormpathAuthenticationProvider = new StormpathAuthenticationProvider();
+
+        Client client = stormpathClient();
+        stormpathAuthenticationProvider.setClient(client);
+        stormpathAuthenticationProvider.setApplicationRestUrl("https://api.stormpath.com/v1/applications/5AnjVUXhEZ51vTjZuCnXJn");
+
+        return stormpathAuthenticationProvider;
     }
 }

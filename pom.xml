@@ -27,6 +27,8 @@
         <spring.data.couchbase.version>1.0.0.M2</spring.data.couchbase.version>
         <spring.security.version>3.2.0.RELEASE</spring.security.version>
         <commons.codec.version>1.9</commons.codec.version>
+        <stormpath.sdk.version>0.9.3</stormpath.sdk.version>
+        <stormpath.spring.security.version>0.2.0</stormpath.spring.security.version>
     </properties>
 
     <dependencyManagement>
@@ -108,6 +110,31 @@
                 <artifactId>commons-codec</artifactId>
                 <version>${commons.codec.version}</version>
             </dependency>
+            <dependency>
+                <groupId>com.stormpath.sdk</groupId>
+                <artifactId>stormpath-sdk-api</artifactId>
+                <version>${stormpath.sdk.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.stormpath.sdk</groupId>
+                <artifactId>stormpath-sdk-api</artifactId>
+                <version>${stormpath.sdk.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.stormpath.sdk</groupId>
+                <artifactId>stormpath-sdk-impl</artifactId>
+                <version>${stormpath.sdk.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.stormpath.sdk</groupId>
+                <artifactId>stormpath-sdk-httpclient</artifactId>
+                <version>${stormpath.sdk.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.stormpath.spring.security</groupId>
+                <artifactId>stormpath-spring-security-core</artifactId>
+                <version>${stormpath.spring.security.version}</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
@@ -126,16 +153,16 @@
         </dependency>
     </dependencies>
 
-    <repositories>
-        <repository>
-            <id>spring-milestones</id>
-            <name>Spring Milestones</name>
-            <url>http://repo.spring.io/milestone</url>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
-        </repository>
-    </repositories>
+    <!--<repositories>-->
+        <!--<repository>-->
+            <!--<id>spring-milestones</id>-->
+            <!--<name>Spring Milestones</name>-->
+            <!--<url>http://repo.spring.io/milestone</url>-->
+            <!--<snapshots>-->
+                <!--<enabled>false</enabled>-->
+            <!--</snapshots>-->
+        <!--</repository>-->
+    <!--</repositories>-->
 
     <build>
         <plugins>
