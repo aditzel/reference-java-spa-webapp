@@ -5,15 +5,9 @@
     <groupId>com.ditzel</groupId>
     <artifactId>dashboard-webapp</artifactId>
     <version>develop-SNAPSHOT</version>
-    <modules>
-        <module>common</module>
-        <module>eis-api</module>
-        <module>eis-impl</module>
-        <module>server</module>
-    </modules>
-    <packaging>pom</packaging>
+    <packaging>war</packaging>
 
-    <name>Dashboard Webapp :: Root</name>
+    <name>Dashboard Webapp</name>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -29,29 +23,19 @@
         <commons.codec.version>1.9</commons.codec.version>
         <stormpath.sdk.version>0.9.3</stormpath.sdk.version>
         <stormpath.spring.security.version>0.2.0</stormpath.spring.security.version>
+        <spring.hateoas.version>0.9.0.RELEASE</spring.hateoas.version>
+        <servlet.version>3.1.0</servlet.version>
+        <maven.war.plugin.version>2.4</maven.war.plugin.version>
+        <java.target.version>1.7</java.target.version>
     </properties>
 
     <dependencyManagement>
         <dependencies>
             <dependency>
-                <groupId>com.ditzel</groupId>
-                <artifactId>common</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.ditzel</groupId>
-                <artifactId>eis-api</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.ditzel</groupId>
-                <artifactId>eis-impl</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.ditzel</groupId>
-                <artifactId>server</artifactId>
-                <version>${project.version}</version>
+                <groupId>javax.servlet</groupId>
+                <artifactId>javax.servlet-api</artifactId>
+                <version>${servlet.version}</version>
+                <scope>provided</scope>
             </dependency>
             <dependency>
                 <groupId>org.springframework</groupId>
@@ -117,11 +101,6 @@
             </dependency>
             <dependency>
                 <groupId>com.stormpath.sdk</groupId>
-                <artifactId>stormpath-sdk-api</artifactId>
-                <version>${stormpath.sdk.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.stormpath.sdk</groupId>
                 <artifactId>stormpath-sdk-impl</artifactId>
                 <version>${stormpath.sdk.version}</version>
             </dependency>
@@ -134,6 +113,11 @@
                 <groupId>com.stormpath.spring.security</groupId>
                 <artifactId>stormpath-spring-security-core</artifactId>
                 <version>${stormpath.spring.security.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.hateoas</groupId>
+                <artifactId>spring-hateoas</artifactId>
+                <version>${spring.hateoas.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
@@ -151,18 +135,55 @@
             <groupId>org.mockito</groupId>
             <artifactId>mockito-all</artifactId>
         </dependency>
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>javax.servlet-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-webmvc</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.hateoas</groupId>
+            <artifactId>spring-hateoas</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>cglib</groupId>
+            <artifactId>cglib-nodep</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-web</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-config</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-test</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>commons-codec</groupId>
+            <artifactId>commons-codec</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.stormpath.sdk</groupId>
+            <artifactId>stormpath-sdk-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.stormpath.sdk</groupId>
+            <artifactId>stormpath-sdk-impl</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.stormpath.sdk</groupId>
+            <artifactId>stormpath-sdk-httpclient</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.stormpath.spring.security</groupId>
+            <artifactId>stormpath-spring-security-core</artifactId>
+        </dependency>
     </dependencies>
-
-    <!--<repositories>-->
-        <!--<repository>-->
-            <!--<id>spring-milestones</id>-->
-            <!--<name>Spring Milestones</name>-->
-            <!--<url>http://repo.spring.io/milestone</url>-->
-            <!--<snapshots>-->
-                <!--<enabled>false</enabled>-->
-            <!--</snapshots>-->
-        <!--</repository>-->
-    <!--</repositories>-->
 
     <build>
         <plugins>
@@ -171,34 +192,18 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>${maven.compiler.plugin.version}</version>
                 <configuration>
-                    <source>1.7</source>
-                    <target>1.7</target>
+                    <source>${java.target.version}</source>
+                    <target>${java.target.version}</target>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-war-plugin</artifactId>
+                <version>${maven.war.plugin.version}</version>
+                <configuration>
+                    <failOnMissingWebXml>false</failOnMissingWebXml>
                 </configuration>
             </plugin>
         </plugins>
     </build>
-
-    <profiles>
-        <profile>
-            <id>jrebel</id>
-            <build>
-                <plugins>
-                    <plugin>
-                        <groupId>org.zeroturnaround</groupId>
-                        <artifactId>jrebel-maven-plugin</artifactId>
-                        <version>${jrebel.plugin.version}</version>
-                        <executions>
-                            <execution>
-                                <id>generate-rebel-xml</id>
-                                <phase>process-resources</phase>
-                                <goals>
-                                    <goal>generate</goal>
-                                </goals>
-                            </execution>
-                        </executions>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
-    </profiles>
 </project>

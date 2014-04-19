@@ -20,7 +20,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
         SecurityConfig.class
 })
 @EnableWebMvc
-@ComponentScan(basePackages = {"com.ditzel.dashboard.server.controller.security"})
+@ComponentScan(basePackages = {"com.ditzel.dashboard.server.controller"})
 public class WebAppConfig extends WebMvcConfigurerAdapter {
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
