@@ -1,5 +1,6 @@
 package com.ditzel.dashboard.server.config;
 
+import com.ditzel.dashboard.server.Constants;
 import com.ditzel.dashboard.server.filter.security.ClientFingerprintSessionBindingFilter;
 import com.ditzel.dashboard.server.filter.security.CsrfTokenRequestBindingFilter;
 import com.ditzel.dashboard.server.security.HttpClientFingerprintHasher;
@@ -26,10 +27,6 @@ import org.springframework.security.web.csrf.CsrfFilter;
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
-    private static String USER_ROLE = "https://api.stormpath.com/v1/groups/70f4Mm3bMyCc9Z8ocCMisp";
-    private static String ADMIN_ROLE = "https://api.stormpath.com/v1/groups/6hKi5x6hBS2uZ36jLwSN8R";
-    private static String STORMPATH_APPLICATION_URL = "https://api.stormpath.com/v1/applications/5AnjVUXhEZ51vTjZuCnXJn";
-    private static String STORMPATH_API_KEY_LOCATION = System.getProperty("user.home") + "/.stormpath/apiKey.properties";
 
     @Autowired
     Environment env;
@@ -94,7 +91,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     public Client stormpathClient() throws Exception {
         ClientFactory clientFactory = new ClientFactory();
 
-        clientFactory.setApiKeyFileLocation(STORMPATH_API_KEY_LOCATION);
+        clientFactory.setApiKeyFileLocation(Constants.STORMPATH_API_KEY_LOCATION);
 
         return clientFactory.getClientBuilder().build();
     }
@@ -105,7 +102,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
         Client client = stormpathClient();
         stormpathAuthenticationProvider.setClient(client);
-        stormpathAuthenticationProvider.setApplicationRestUrl(STORMPATH_APPLICATION_URL);
+        stormpathAuthenticationProvider.setApplicationRestUrl(Constants.STORMPATH_APPLICATION_URL);
 
         return stormpathAuthenticationProvider;
     }
