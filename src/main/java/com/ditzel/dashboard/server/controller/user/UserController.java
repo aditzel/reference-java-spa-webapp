@@ -24,18 +24,19 @@ import com.stormpath.sdk.account.Account;
 import com.stormpath.sdk.account.AccountList;
 import com.stormpath.sdk.application.Application;
 import com.stormpath.sdk.client.Client;
-import com.stormpath.sdk.group.Group;
-import com.stormpath.sdk.group.GroupList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
-import static com.stormpath.sdk.account.Accounts.*;
-
-import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+
+import static com.stormpath.sdk.account.Accounts.username;
+import static com.stormpath.sdk.account.Accounts.where;
 
 /**
  * Exposes {@link com.ditzel.dashboard.model.UserResource} via a HATEOAS compliant REST API.
@@ -58,7 +59,7 @@ public class UserController {
         return "redirect:/api/user/" + authentication.getName();
     }
 
-    @RequestMapping(value = "{username}")
+    @RequestMapping(value = "{username}", method = RequestMethod.GET)
     @ResponseBody
     public UserResource getUser(@PathVariable("username") String username) {
 

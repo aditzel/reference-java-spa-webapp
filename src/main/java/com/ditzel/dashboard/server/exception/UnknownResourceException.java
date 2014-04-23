@@ -16,12 +16,16 @@
 
 package com.ditzel.dashboard.server.exception;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.ResponseStatus;
+
 /**
  * Application specific representation of a resource not being found within the system.
  *
  * @author Allan Ditzel
  * @since 1.0
  */
+@ResponseStatus(value = HttpStatus.NOT_FOUND, reason = "Unknown Resource")
 public class UnknownResourceException extends RuntimeException {
     public UnknownResourceException() {
     }
