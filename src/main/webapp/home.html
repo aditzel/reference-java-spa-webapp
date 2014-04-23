@@ -48,7 +48,7 @@
         <div class="collapse navbar-collapse">
             <ul class="nav navbar-nav navbar-right">
                 <li><p class="navbar-text">Hello, {{ currentUser.firstName }}</p></li>
-                <li><a href="#/admin">Admin</a></li>
+                <li data-ng-show="hasRole('administrator')"><a href="#/admin">Admin</a></li>
                 <li><a href="/logout">Logout</a></li>
             </ul>
         </div>

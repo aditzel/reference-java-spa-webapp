@@ -26,6 +26,16 @@ dashboardApp.controller("DashboardController", function($scope, currentUserFacto
     });
 
     $scope.hasRole = function(requiredRole) {
-        return false;
+        var hasRole = false;
+
+        if ($scope.currentUser.roles) {
+            angular.forEach($scope.currentUser.roles, function(role) {
+                if (requiredRole === role) {
+                    hasRole = true;
+                }
+            });
+        }
+
+        return hasRole;
     }
 });
