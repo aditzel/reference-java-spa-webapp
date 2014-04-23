@@ -53,9 +53,9 @@ public class UserController {
     private UserResourceAssembler resourceAssembler;
 
     @RequestMapping(value = "/current", method = RequestMethod.GET)
-    public void redirectToCurrentUser(HttpServletResponse response) throws IOException {
+    public String redirectToCurrentUser() throws IOException {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        response.sendRedirect("/api/user/" + authentication.getName());
+        return "redirect:/api/user/" + authentication.getName();
     }
 
     @RequestMapping(value = "{username}")
