@@ -14,26 +14,43 @@
  * limitations under the License.
  */
 
-var dashboardApp = angular.module('DashboardApp', ['ngRoute']);
+var dashboardApp = angular.module('DashboardApp', ['ngRoute'])
 
-dashboardApp.config(function($routeProvider) {
-    $routeProvider
-        .when('/',
+    .config(function ($routeProvider) {
+        $routeProvider
+            .when('/',
             {
                 controller: 'DashboardController',
                 templateUrl: '/assets/js/DashboardApp/partials/index.html'
             }
         )
-        .when('/admin',
+            .when('/admin',
             {
                 controller: 'AdminController',
                 templateUrl: '/assets/js/DashboardApp/partials/admin.html'
             }
         )
-        .otherwise(
+            .otherwise(
             {
                 redirectTo: '/'
             }
         );
-});
+    })
+    .factory('currentUserFactory', function ($q, $http) {
+
+        var factory = {};
+
+        factory.getCurrentUser = function() {
+            var deferred = $q.defer();
+
+            $http.get('/api/user/current')
+                .then(function (response) {
+                    deferred.resolve(response);
+                });
+
+            return deferred.promise;
+        };
+
+        return factory;
+    });
 

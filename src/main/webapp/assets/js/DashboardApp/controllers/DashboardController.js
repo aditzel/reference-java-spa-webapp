@@ -14,6 +14,18 @@
  * limitations under the License.
  */
 
-dashboardApp.controller("DashboardController", function($scope) {
+dashboardApp.controller("DashboardController", function($scope, currentUserFactory) {
+    $scope.currentUser = {
+        firstName: ""
+    };
 
+    var currentUserPromise = currentUserFactory.getCurrentUser();
+
+    currentUserPromise.then(function(result) {
+        $scope.currentUser = result.data;
+    });
+
+    $scope.hasRole = function(requiredRole) {
+        return false;
+    }
 });
