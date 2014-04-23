@@ -29,15 +29,16 @@ import java.util.Set;
  */
 public class UserResource extends ResourceSupport {
     private String username;
+    private String firstName;
+    private String lastName;
     private Set<String> roles;
 
-    public UserResource(String username) {
-        roles = new HashSet<>();
-        this.username = username;
-    }
+    public UserResource(String username, String firstName, String lastName, String... roles) {
+        this.roles = new HashSet<>();
 
-    public UserResource(String username, String... roles) {
-        this(username);
+        this.username = username;
+        this.firstName = firstName;
+        this.lastName = lastName;
 
         for (String role : roles) {
             addRole(role);
@@ -54,5 +55,13 @@ public class UserResource extends ResourceSupport {
 
     public String getUsername() {
         return username;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
     }
 }

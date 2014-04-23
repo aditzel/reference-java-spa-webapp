@@ -53,6 +53,6 @@ public class UserResourceAssembler extends ResourceAssemblerSupport<Account, Use
             groupNames.add(group.getName().toLowerCase());
         }
 
-        return new UserResource(entity.getUsername(), groupNames.toArray(new String[groupNames.size()]));
+        return new UserResource(entity.getUsername(), entity.getGivenName(), entity.getSurname(), groupNames.toArray(new String[groupNames.size()]));
     }
 }
