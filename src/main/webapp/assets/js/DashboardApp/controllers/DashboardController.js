@@ -14,6 +14,13 @@
  * limitations under the License.
  */
 
-dashboardApp.controller("DashboardController", function($scope, currentUserFactory) {
+dashboardApp.controller("DashboardController", function($scope, $location, currentUserFactory) {
     $scope.currentUser = currentUserFactory.getCurrentUser();
+
+    $scope.$on('$routeChangeStart', function(scope, next, current) {
+        var requiredRole = next.$$route.hasRole;
+        if (requiredRole && !$scope.currentUser.hasRole(requiredRole)) {
+            $location.path('/');
+        }
+    })
 });
