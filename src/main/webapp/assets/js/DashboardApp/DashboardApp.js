@@ -14,8 +14,22 @@
  * limitations under the License.
  */
 
-var dashboardApp = angular.module('DashboardApp', ['ngRoute'])
+/**
+ * We fetch the current user from the application prior to the angular app starting up. Then we manually bootstrap
+ * the application.
+ */
+var currentUser;
+angular.element(document).ready(function() {
+    $.get('/api/user/current', function(data) {
+        currentUser = data;
+        angular.bootstrap(document, ['DashboardApp']);
+    });
+});
 
+var dashboardApp = angular.module('DashboardApp', ['ngRoute'])
+    .run(function(currentUserFactory) {
+        currentUserFactory.setCurrentUser(currentUser);
+    })
     .config(function ($routeProvider) {
         $routeProvider
             .when('/',
@@ -36,21 +50,28 @@ var dashboardApp = angular.module('DashboardApp', ['ngRoute'])
             }
         );
     })
-    .factory('currentUserFactory', function ($q, $http) {
+    .factory('currentUserFactory', function () {
+        var currentUser;
 
-        var factory = {};
+        return {
+            setCurrentUser: function(user) {
+                currentUser = user;
+                // add functionality we'll use throughout the app
+                currentUser.hasRole = function(requiredRole) {
+                    var hasRole = false;
 
-        factory.getCurrentUser = function() {
-            var deferred = $q.defer();
-
-            $http.get('/api/user/current')
-                .then(function (response) {
-                    deferred.resolve(response);
-                });
-
-            return deferred.promise;
-        };
-
-        return factory;
+                    for (var i = 0 ; i < currentUser.roles.length; i++) {
+                        if (currentUser.roles[i] === requiredRole) {
+                            hasRole = true;
+                            break;
+                        }
+                    }
+                    return hasRole;
+                }
+            },
+            getCurrentUser: function() {
+                return currentUser;
+            }
+        }
     });
 
