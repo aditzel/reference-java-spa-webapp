@@ -14,6 +14,16 @@
  * limitations under the License.
  */
 
-dashboardApp.controller("DashboardController", function($scope, currentUserFactory) {
-    $scope.currentUser = currentUserFactory.getCurrentUser();
+dashboardApp.directive('hasRole', function(currentUserFactory) {
+    return {
+        restrict: 'A',
+        link: function(scope, element, attributes) {
+            var currentUser = currentUserFactory.getCurrentUser();
+            var rawValue = attributes.hasRole.trim();
+
+            if (!currentUser.hasRole(rawValue)) {
+                element.remove();
+            }
+        }
+    }
 });
