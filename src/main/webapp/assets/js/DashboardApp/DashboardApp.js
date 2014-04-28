@@ -41,7 +41,8 @@ var dashboardApp = angular.module('DashboardApp', ['ngRoute'])
             .when('/admin',
             {
                 controller: 'AdminController',
-                templateUrl: '/assets/js/DashboardApp/partials/admin.html'
+                templateUrl: '/assets/js/DashboardApp/partials/admin.html',
+                hasRole: 'administrator'
             }
         )
             .otherwise(
