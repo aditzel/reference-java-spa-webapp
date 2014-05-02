@@ -37,8 +37,8 @@
     <form class="form-signin" role="form" method="post" name="loginForm" data-ng-submit="login()">
         <h2 class="form-signin-heading">None Shall Pass!</h2>
 
-        <div id="messages" class="alert alert-danger" data-ng-show="errorMessage">{{errorMessage}}</div>
-        <div class="form-group" data-ng-class="{'has-error': errorMessage}" data-ng-cloak="">
+        <div id="messages" class="alert alert-danger" data-ng-show="errorMessage" data-ng-cloak="">{{errorMessage}}</div>
+        <div class="form-group" data-ng-class="{'has-error': errorMessage}">
             <input type="text" class="form-control" placeholder="Username" required autofocus name="username"
                    data-ng-model="formData.username">
             <input type="password" class="form-control" placeholder="Password" name="password" required
