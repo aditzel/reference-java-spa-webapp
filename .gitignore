@@ -44,3 +44,4 @@ Thumbs.db
 # Maven Files #
 ###############
 target/
+target-grunt/
