@@ -68,11 +68,11 @@ var dashboardApp = angular.module('DashboardApp', ['ngRoute'])
                         }
                     }
                     return hasRole;
-                }
+                };
             },
             getCurrentUser: function() {
                 return currentUser;
             }
-        }
+        };
     });
 
