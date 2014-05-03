@@ -249,7 +249,6 @@
                 <version>${grunt-maven-plugin.version}</version>
                 <configuration>
                     <gruntOptions>
-                        <gruntOption>--verbose</gruntOption>
                     </gruntOptions>
                 </configuration>
                 <executions>
