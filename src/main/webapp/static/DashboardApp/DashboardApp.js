@@ -35,13 +35,13 @@ var dashboardApp = angular.module('DashboardApp', ['ngRoute'])
             .when('/',
             {
                 controller: 'DashboardController',
-                templateUrl: '/assets/js/DashboardApp/partials/index.html'
+                templateUrl: '/static/DashboardApp/partials/index.html'
             }
         )
             .when('/admin',
             {
                 controller: 'AdminController',
-                templateUrl: '/assets/js/DashboardApp/partials/admin.html',
+                templateUrl: '/static/DashboardApp/partials/admin.html',
                 hasRole: 'administrator'
             }
         )
@@ -68,11 +68,11 @@ var dashboardApp = angular.module('DashboardApp', ['ngRoute'])
                         }
                     }
                     return hasRole;
-                }
+                };
             },
             getCurrentUser: function() {
                 return currentUser;
             }
-        }
+        };
     });
 

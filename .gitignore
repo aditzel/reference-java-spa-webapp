@@ -45,3 +45,4 @@ Thumbs.db
 ###############
 target/
 target-grunt/
+src/main/webapp/static/node_modules/
