@@ -27,8 +27,8 @@ module.exports = function (grunt) {
         },
         mavenDist: {
             options: {
-                warName: '<%= gruntMavenProperties.warName %>',
-                deliverables: ['**', '!non-deliverable.js'],
+                warName: 'ROOT',
+                deliverables: ['**'],
                 gruntDistDir: 'dist'
             },
             dev: {}
@@ -41,15 +41,67 @@ module.exports = function (grunt) {
             files: ["LoginApp/*.js", "DashboardApp/*.js"]
         },
         concat: {
-            options: {
-                // define a string to put between each file in the concatenated output
-                separator: ';'
-            },
-            dist: {
+            loginjs: {
+                options: {
+                    // define a string to put between each file in the concatenated output
+                    separator: ';'
+                },
                 // the files to concatenate
-                src: ['DashboardApp/**.js', 'LoginApp/**.js'],
+                src: ['LoginApp/LoginApp.js', 'LoginApp/controllers/*.js'],
                 // the location of the resulting JS file
-                dest: 'dist/<%= pkg.name %>.js'
+                dest: 'dist/login.js'
+            },
+            dashboardjs: {
+                options: {
+                    // define a string to put between each file in the concatenated output
+                    separator: ';'
+                },
+                // the files to concatenate
+                src: ['DashboardApp/**/*.js'],
+                // the location of the resulting JS file
+                dest: 'dist/dashboard.js'
+            },
+            logincss: {
+                src: ['LoginApp/styles/**/*.css'],
+                dest: 'generated/login.css'
+            },
+            dashboardcss: {
+                src: ['DashboardApp/styles/**/*.css'],
+                dest: 'generated/dashboard.css'
+            }
+        },
+        ngmin: {
+            login: {
+                expand: false,
+                src: ['dist/login.js'],
+                dest: 'generated/login.js'
+            },
+            dashboard: {
+                expand: false,
+                src: ['dist/dashboard.js'],
+                dest: 'generated/dashboard.js'
+            }
+        },
+        uglify: {
+            login: {
+                files: {
+                    'dist/login.min.js': ['generated/login.js']
+                }
+            },
+            dashboard: {
+                files: {
+                    'dist/dashboard.min.js': ['generated/dashboard.js']
+                }
+            }
+        },
+        cssmin: {
+            login: {
+                src: 'generated/login.css',
+                dest: 'dist/login.min.css'
+            },
+            dashboard: {
+                src: 'generated/dashboard.css',
+                dest: 'dist/dashboard.min.css'
             }
         }
     });
@@ -58,7 +110,22 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-contrib-watch');
     grunt.loadNpmTasks('grunt-contrib-jshint');
     grunt.loadNpmTasks('grunt-contrib-concat');
+    grunt.loadNpmTasks('grunt-contrib-uglify');
+    grunt.loadNpmTasks('grunt-ngmin');
+    grunt.loadNpmTasks('grunt-contrib-cssmin');
 
-    grunt.registerTask('default', ['mavenPrepare', 'jshint', 'concat', 'mavenDist']);
-
+    grunt.registerTask('default',
+        ['mavenPrepare',
+            'jshint',
+            'concat:loginjs',
+            'ngmin:login',
+            'concat:dashboardjs',
+            'ngmin:dashboard',
+            'uglify:login',
+            'uglify:dashboard',
+            'concat:logincss',
+            'cssmin:login',
+            'concat:dashboardcss',
+            'cssmin:dashboard',
+            'mavenDist']);
 };
