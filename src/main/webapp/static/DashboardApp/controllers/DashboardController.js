@@ -14,13 +14,18 @@
  * limitations under the License.
  */
 
-dashboardApp.controller("DashboardController", function($scope, $location, currentUserFactory) {
+dashboardApp.controller("DashboardController", function($scope, $location, currentUserFactory, eventMessageFactory) {
     $scope.currentUser = currentUserFactory.getCurrentUser();
+    $scope.alertMessage = null;
 
     $scope.$on('$routeChangeStart', function(scope, next, current) {
         var requiredRole = next.$$route.hasRole;
         if (requiredRole && !$scope.currentUser.hasRole(requiredRole)) {
             $location.path('/');
         }
-    })
+    });
+
+    $scope.$on('operationNotAllowedEvent', function(event) {
+        $scope.alertMessage = eventMessageFactory.getMessageForEvent(event) || null;
+    });
 });
