@@ -25,5 +25,5 @@ dashboardApp.directive('hasRole', function(currentUserFactory) {
                 element.remove();
             }
         }
-    }
+    };
 });

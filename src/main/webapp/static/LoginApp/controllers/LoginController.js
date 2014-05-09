@@ -16,9 +16,11 @@
 
 loginApp.controller("LoginController", function($scope, $http) {
     $scope.formData = {};
+    $scope.processingLogin = false;
 
     $scope.login = function() {
-        $http.head('/')
+        $scope.processingLogin = true;
+            $http.head('/')
             .success(function(data, status, headers, config) {
 
                 var csrfToken =  headers("X-CSRF-TOKEN");
@@ -39,7 +41,8 @@ loginApp.controller("LoginController", function($scope, $http) {
                     } else {
                         $scope.errorMessage = "Error attempting to log in. Please try again later.";
                     }
-                });
+                        $scope.processingLogin = false;
+                    });
         });
-    }
+    };
 });

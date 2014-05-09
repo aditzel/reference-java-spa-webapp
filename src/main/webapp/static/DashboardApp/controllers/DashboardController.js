@@ -14,13 +14,34 @@
  * limitations under the License.
  */
 
-dashboardApp.controller("DashboardController", function($scope, $location, currentUserFactory) {
+dashboardApp.controller("DashboardController", function($scope, $location, currentUserFactory, eventMessageFactory, $http) {
     $scope.currentUser = currentUserFactory.getCurrentUser();
+    $scope.alertMessages = [];
 
     $scope.$on('$routeChangeStart', function(scope, next, current) {
         var requiredRole = next.$$route.hasRole;
         if (requiredRole && !$scope.currentUser.hasRole(requiredRole)) {
             $location.path('/');
         }
-    })
+    });
+
+    $scope.$on('operationNotAllowedEvent', function(event) {
+        var message = eventMessageFactory.getMessageForEvent(event);
+        var hasValue = false;
+        if (message) {
+            for (var i = 0; i < $scope.alertMessages.length; i++) {
+                if ($scope.alertMessages[i] === message) {
+                    hasValue = true;
+                    break;
+                }
+            }
+            if (!hasValue) {
+                $scope.alertMessage = $scope.alertMessages.push(message);
+            }
+        }
+    });
+
+    $scope.closeAlert = function(index) {
+        $scope.alertMessages.splice(index, 1);
+    };
 });
