@@ -38,7 +38,7 @@ module.exports = function (grunt) {
             tasks: ['default']
         },
         jshint: {
-            files: ["LoginApp/*.js", "DashboardApp/*.js"]
+            files: ["LoginApp/**/*.js", "DashboardApp/**/*.js"]
         },
         concat: {
             loginjs: {

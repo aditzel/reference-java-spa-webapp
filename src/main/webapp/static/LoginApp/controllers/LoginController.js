@@ -44,5 +44,5 @@ loginApp.controller("LoginController", function($scope, $http) {
                         $scope.processingLogin = false;
                     });
         });
-    }
+    };
 });

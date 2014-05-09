@@ -26,7 +26,7 @@ angular.element(document).ready(function() {
     });
 });
 
-var dashboardApp = angular.module('DashboardApp', ['ngRoute'])
+var dashboardApp = angular.module('DashboardApp', ['ngRoute', 'ui.bootstrap'])
     .run(function(currentUserFactory) {
         currentUserFactory.setCurrentUser(currentUser);
     })
@@ -57,10 +57,16 @@ var dashboardApp = angular.module('DashboardApp', ['ngRoute'])
     .factory('httpSecurityInterceptor', function($q, $rootScope) {
         return {
             response: function(response) {
-                $rootScope.$broadcast('operationNotAllowedEvent');
                 return response || $q.when(response);
             },
             responseError: function(response) {
+                if (response.status === 401) {
+                    window.location = "/logout";
+                }
+                if (response.status === 403) {
+                    $rootScope.$broadcast('operationNotAllowedEvent');
+                }
+
                 return $q.reject(response);
             }
         };
@@ -91,7 +97,7 @@ var dashboardApp = angular.module('DashboardApp', ['ngRoute'])
     })
     .factory('eventMessageFactory', function() {
         var messages = {
-            operationNotAllowed: 'You are not allowed to perform that operation.'
+            operationNotAllowedEvent: 'You are not allowed to perform that operation.'
         };
 
         return {
