@@ -35,13 +35,13 @@ var dashboardApp = angular.module('DashboardApp', ['ngRoute', 'ui.bootstrap'])
             .when('/',
             {
                 controller: 'DashboardController',
-                templateUrl: '/static/DashboardApp/partials/index.html'
+                templateUrl: '/static/DashboardApp/partials/home.partial.html'
             }
         )
             .when('/admin',
             {
                 controller: 'AdminController',
-                templateUrl: '/static/DashboardApp/partials/admin.html',
+                templateUrl: '/static/DashboardApp/partials/admin.partial.html',
                 hasRole: 'administrator'
             }
         )
