@@ -14,8 +14,9 @@
  * limitations under the License.
  */
 
-package com.ditzel.dashboard.model;
+package com.ditzel.dashboard.model.resource;
 
+import com.ditzel.dashboard.model.resource.UserResource;
 import com.ditzel.dashboard.server.controller.user.UserController;
 import com.stormpath.sdk.account.Account;
 import com.stormpath.sdk.group.Group;
@@ -26,7 +27,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Facilitates the creation of {@link com.ditzel.dashboard.model.UserResource} classes for the {@link com.ditzel.dashboard.server.controller.user.UserController}
+ * Facilitates the creation of {@link com.ditzel.dashboard.model.resource.UserResource} classes for the {@link com.ditzel.dashboard.server.controller.user.UserController}
  * using Stormpath {@link com.stormpath.sdk.account.Account} entities.
  *
  * @author Allan Ditzel
@@ -53,6 +54,6 @@ public class UserResourceAssembler extends ResourceAssemblerSupport<Account, Use
             groupNames.add(group.getName().toLowerCase());
         }
 
-        return new UserResource(entity.getUsername(), entity.getGivenName(), entity.getSurname(), groupNames.toArray(new String[groupNames.size()]));
+        return new UserResource(entity.getUsername(), entity.getGivenName(), entity.getSurname(), entity.getEmail(), groupNames.toArray(new String[groupNames.size()]));
     }
 }

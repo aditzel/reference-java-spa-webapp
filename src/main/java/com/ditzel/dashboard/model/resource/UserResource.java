@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.ditzel.dashboard.model;
+package com.ditzel.dashboard.model.resource;
 
 import org.springframework.hateoas.ResourceSupport;
 
@@ -31,14 +31,20 @@ public class UserResource extends ResourceSupport {
     private String username;
     private String firstName;
     private String lastName;
+    private String email;
     private Set<String> roles;
 
-    public UserResource(String username, String firstName, String lastName, String... roles) {
+    public UserResource() {
+
+    }
+
+    public UserResource(String username, String firstName, String lastName, String email, String... roles) {
         this.roles = new HashSet<>();
 
         this.username = username;
         this.firstName = firstName;
         this.lastName = lastName;
+        this.email = email;
 
         for (String role : roles) {
             addRole(role);
@@ -51,6 +57,18 @@ public class UserResource extends ResourceSupport {
 
     public Set<String> getRoles() {
         return roles;
+    }
+
+    public void setRoles(Set<String> roles) {
+        this.roles = roles;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public String getUsername() {
