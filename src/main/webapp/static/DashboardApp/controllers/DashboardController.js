@@ -44,4 +44,12 @@ dashboardApp.controller("DashboardController", function($scope, $location, curre
     $scope.closeAlert = function(index) {
         $scope.alertMessages.splice(index, 1);
     };
+
+    $scope.test403Response = function() {
+        $http.get("/api/test/generate403");
+    };
+
+    $scope.test401Response = function() {
+        $http.get("/api/test/generate401");
+    };
 });
