@@ -16,7 +16,7 @@
 
 package com.ditzel.dashboard.server.config;
 
-import com.ditzel.dashboard.model.UserResourceAssembler;
+import com.ditzel.dashboard.model.resource.UserResourceAssembler;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;

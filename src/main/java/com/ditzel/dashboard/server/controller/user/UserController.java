@@ -16,30 +16,33 @@
 
 package com.ditzel.dashboard.server.controller.user;
 
-import com.ditzel.dashboard.model.UserResource;
-import com.ditzel.dashboard.model.UserResourceAssembler;
+import com.ditzel.dashboard.model.resource.UserResource;
+import com.ditzel.dashboard.model.resource.UserResourceAssembler;
 import com.ditzel.dashboard.server.Constants;
+import com.ditzel.dashboard.server.exception.ApplicationException;
 import com.ditzel.dashboard.server.exception.UnknownResourceException;
 import com.stormpath.sdk.account.Account;
 import com.stormpath.sdk.account.AccountList;
 import com.stormpath.sdk.application.Application;
 import com.stormpath.sdk.client.Client;
+import com.stormpath.sdk.group.Group;
+import com.stormpath.sdk.group.GroupList;
+import com.stormpath.sdk.group.Groups;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
+import java.util.Iterator;
 
 import static com.stormpath.sdk.account.Accounts.username;
 import static com.stormpath.sdk.account.Accounts.where;
 
 /**
- * Exposes {@link com.ditzel.dashboard.model.UserResource} via a HATEOAS compliant REST API.
+ * Exposes {@link com.ditzel.dashboard.model.resource.UserResource} via a HATEOAS compliant REST API.
  *
  * @author Allan Ditzel
  * @since 1.0
@@ -80,5 +83,32 @@ public class UserController {
         }
 
         return resourceAssembler.toResource(requestedUser);
+    }
+
+    @RequestMapping(method = RequestMethod.POST, consumes = "application/json;charset=UTF-8", produces = "application/json;charset=UTF-8")
+    @ResponseBody
+    public UserResource createUser(@RequestBody UserResource userResource) {
+        Application application = client.getResource(Constants.STORMPATH_APPLICATION_URL, Application.class);
+        GroupList groupList = application.getGroups(Groups.where(Groups.name().eqIgnoreCase("user")));
+        Iterator<Group> iterator = groupList.iterator();
+        if (!iterator.hasNext()) {
+            throw new ApplicationException("Could not find group 'user' to add " + userResource.getEmail() + " to.");
+        }
+        Group userGroup = iterator.next();
+        Account newAccount = createNewAccountInstanceWithRandomPassword(userResource);
+        newAccount = application.createAccount(newAccount);
+        newAccount.addGroup(userGroup);
+        newAccount.save();
+        return resourceAssembler.toResource(newAccount);
+    }
+
+    protected Account createNewAccountInstanceWithRandomPassword(UserResource userResource) {
+        Account newAccount = client.instantiate(Account.class);
+        newAccount.setGivenName(userResource.getFirstName());
+        newAccount.setSurname(userResource.getLastName());
+        newAccount.setUsername(userResource.getUsername());
+        newAccount.setEmail(userResource.getEmail());
+        newAccount.setPassword(RandomStringUtils.random(64, true, true));
+        return  newAccount;
     }
 }

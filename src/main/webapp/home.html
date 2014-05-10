@@ -57,11 +57,11 @@
 
 <div class="container">
     <div class="starter-template">
-        <alert data-ng-repeat="message in alertMessages" type="danger" close="closeAlert($index)">{{message}}</alert>
+        <div data-alert data-ng-repeat="message in alertMessages" data-type="danger" data-close="closeAlert($index)">{{message}}</div>
         <div data-ng-view=""></div>
     </div>
 
-</div><!-- /.container -->
+</div>
 
 <script src="/static/bower_components/jquery/dist/jquery.min.js" type="text/javascript"></script>
 <script src="/static/bower_components/angular/angular.min.js" type="text/javascript"></script>
