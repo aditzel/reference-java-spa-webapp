@@ -28,7 +28,10 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.util.MimeType;
+import org.springframework.util.MimeTypeUtils;
 
+import java.nio.charset.Charset;
 import java.util.Iterator;
 
 import static org.mockito.Matchers.any;
@@ -67,6 +70,10 @@ public class UserControllerTest {
     private MockMvc mockMvc;
 
     private UserController userController;
+
+    private String jsonPayload = "{\"username\":\"testUsername\",\"firstName\":\"testFirstName\",\"lastName\":\"testLastName\", \"email\":\"testEmail@domain.com\", \"roles\":[\"user\"]}";
+
+    private MediaType application_json_utf8 = new MediaType(MediaType.APPLICATION_JSON.getType(), MediaType.APPLICATION_JSON.getSubtype(), Charset.forName("utf8"));
 
     @Before
     public void setUp() {
@@ -153,31 +160,54 @@ public class UserControllerTest {
     }
 
     @Test
-    public void ensurecreateNewAccountInstanceWithRandomPasswordCallsNecessaryFields() {
+    public void ensurecreateNewAccountInstanceWithRandomPasswordCallsNecessaryFields() throws Exception {
         String randomPassword = "password";
-        String username = "username";
-        String email = "email";
-        String firstName = "firstName";
-        String lastName = "lastName";
+        String username = "testUsername";
+        String email = "testEmail@domain.com";
+        String firstName = "testFirstName";
+        String lastName = "testLastName";
 
         UserResource userResource = mock(UserResource.class);
 
         mockStatic(RandomStringUtils.class);
+        GroupList groupList = mock(GroupList.class);
+        Iterator<Group> groupIterator = mock(Iterator.class);
+        Group group = mock(Group.class);
         when(RandomStringUtils.random(64, true, true)).thenReturn(randomPassword);
+        when(client.getResource(Constants.STORMPATH_APPLICATION_URL, Application.class)).thenReturn(application);
+        when(application.getGroups(any(GroupCriteria.class))).thenReturn(groupList);
+        when(groupList.iterator()).thenReturn(groupIterator);
+        when(groupIterator.hasNext()).thenReturn(true);
+        when(groupIterator.next()).thenReturn(group);
         when(client.instantiate(Account.class)).thenReturn(account);
         when(userResource.getUsername()).thenReturn(username);
         when(userResource.getEmail()).thenReturn(email);
         when(userResource.getFirstName()).thenReturn(firstName);
         when(userResource.getLastName()).thenReturn(lastName);
+        when(application.createAccount(account)).thenReturn(account);
+        when(account.addGroup(group)).thenReturn(null);
 
-        userController.createNewAccountInstanceWithRandomPassword(userResource);
+        mockMvc.perform(
+                post("/api/user")
+                        .contentType(application_json_utf8)
+                        .content(jsonPayload)
+                )
+                .andExpect(status().isOk());
 
+        verify(client).getResource(Constants.STORMPATH_APPLICATION_URL, Application.class);
+        verify(application).getGroups(any(GroupCriteria.class));
+        verify(groupList).iterator();
+        verify(groupIterator).hasNext();
+        verify(groupIterator).next();
         verify(client).instantiate(Account.class);
         verify(account).setUsername(username);
         verify(account).setEmail(email);
         verify(account).setGivenName(firstName);
         verify(account).setSurname(lastName);
         verify(account).setPassword(randomPassword);
+        verify(application).createAccount(account);
+        verify(account).addGroup(group);
+        verify(account).save();
         verifyStatic();
     }
 }

@@ -85,7 +85,7 @@ public class UserController {
         return resourceAssembler.toResource(requestedUser);
     }
 
-    @RequestMapping(method = RequestMethod.POST)
+    @RequestMapping(method = RequestMethod.POST, consumes = "application/json;charset=UTF-8", produces = "application/json;charset=UTF-8")
     @ResponseBody
     public UserResource createUser(@RequestBody UserResource userResource) {
         Application application = client.getResource(Constants.STORMPATH_APPLICATION_URL, Application.class);
