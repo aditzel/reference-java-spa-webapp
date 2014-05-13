@@ -43,6 +43,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @RunWith(PowerMockRunner.class)
 @PrepareForTest({SecurityContextHolder.class, RandomStringUtils.class})
 public class UserControllerTest {
+    private static final String STORMPATH_APPLICATION_URL = "stormpathUrl";
+
     @Mock
     private Client client;
 
@@ -80,6 +82,7 @@ public class UserControllerTest {
         userController = new UserController();
         ReflectionTestUtils.setField(userController, "client", client);
         ReflectionTestUtils.setField(userController, "resourceAssembler", resourceAssembler);
+        ReflectionTestUtils.setField(userController, "stormpathApplicationUrl", STORMPATH_APPLICATION_URL);
         mockMvc = MockMvcBuilders.standaloneSetup(userController).build();
     }
 
@@ -105,7 +108,7 @@ public class UserControllerTest {
 
     @Test()
     public void shouldReturn404WhenUnknownUserSpecified() throws Exception {
-        when(client.getResource(Constants.STORMPATH_APPLICATION_URL, Application.class)).thenReturn(application);
+        when(client.getResource(STORMPATH_APPLICATION_URL, Application.class)).thenReturn(application);
         when(application.getAccounts(any(AccountCriteria.class))).thenReturn(accountList);
         when(accountList.iterator()).thenReturn(accountIterator);
         when(accountIterator.hasNext()).thenReturn(false);
@@ -113,7 +116,7 @@ public class UserControllerTest {
         mockMvc.perform(get("/api/user/doesnotexist"))
                 .andExpect(status().isNotFound());
 
-        verify(client).getResource(Constants.STORMPATH_APPLICATION_URL, Application.class);
+        verify(client).getResource(STORMPATH_APPLICATION_URL, Application.class);
         verify(application).getAccounts(any(AccountCriteria.class));
         verify(accountList).iterator();
         verify(accountIterator).hasNext();
@@ -123,7 +126,7 @@ public class UserControllerTest {
     public void shouldReturnUserJsonWhenKnownUserSpecified() throws Exception {
         String username = "userthatexists";
 
-        when(client.getResource(Constants.STORMPATH_APPLICATION_URL, Application.class)).thenReturn(application);
+        when(client.getResource(STORMPATH_APPLICATION_URL, Application.class)).thenReturn(application);
         when(application.getAccounts(any(AccountCriteria.class))).thenReturn(accountList);
         when(accountList.iterator()).thenReturn(accountIterator);
         when(accountIterator.hasNext()).thenReturn(true);
@@ -133,7 +136,7 @@ public class UserControllerTest {
         mockMvc.perform(get("/api/user/" + username).accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
 
-        verify(client).getResource(Constants.STORMPATH_APPLICATION_URL, Application.class);
+        verify(client).getResource(STORMPATH_APPLICATION_URL, Application.class);
         verify(application).getAccounts(any(AccountCriteria.class));
         verify(accountList).iterator();
         verify(accountIterator).hasNext();
@@ -144,7 +147,7 @@ public class UserControllerTest {
         UserResource userResource = mock(UserResource.class);
         GroupList groupList = mock(GroupList.class);
         Iterator<Group> groupIterator = mock(Iterator.class);
-        when(client.getResource(Constants.STORMPATH_APPLICATION_URL, Application.class)).thenReturn(application);
+        when(client.getResource(STORMPATH_APPLICATION_URL, Application.class)).thenReturn(application);
         when(application.getGroups(any(GroupCriteria.class))).thenReturn(groupList);
         when(groupList.iterator()).thenReturn(groupIterator);
         when(groupIterator.hasNext()).thenReturn(false);
@@ -152,7 +155,7 @@ public class UserControllerTest {
 
         userController.createUser(userResource);
 
-        verify(client).getResource(Constants.STORMPATH_APPLICATION_URL, Application.class);
+        verify(client).getResource(STORMPATH_APPLICATION_URL, Application.class);
         verify(application).getGroups(any(GroupCriteria.class));
         verify(groupList.iterator());
         verify(groupIterator).hasNext();
@@ -174,7 +177,7 @@ public class UserControllerTest {
         Iterator<Group> groupIterator = mock(Iterator.class);
         Group group = mock(Group.class);
         when(RandomStringUtils.random(64, true, true)).thenReturn(randomPassword);
-        when(client.getResource(Constants.STORMPATH_APPLICATION_URL, Application.class)).thenReturn(application);
+        when(client.getResource(STORMPATH_APPLICATION_URL, Application.class)).thenReturn(application);
         when(application.getGroups(any(GroupCriteria.class))).thenReturn(groupList);
         when(groupList.iterator()).thenReturn(groupIterator);
         when(groupIterator.hasNext()).thenReturn(true);
@@ -194,7 +197,7 @@ public class UserControllerTest {
                 )
                 .andExpect(status().isOk());
 
-        verify(client).getResource(Constants.STORMPATH_APPLICATION_URL, Application.class);
+        verify(client).getResource(STORMPATH_APPLICATION_URL, Application.class);
         verify(application).getGroups(any(GroupCriteria.class));
         verify(groupList).iterator();
         verify(groupIterator).hasNext();

@@ -24,6 +24,7 @@ import com.stormpath.sdk.client.Client;
 import com.stormpath.spring.security.client.ClientFactory;
 import com.stormpath.spring.security.provider.StormpathAuthenticationProvider;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
@@ -45,7 +46,10 @@ import org.springframework.security.web.csrf.CsrfFilter;
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
-    Environment env;
+    private Environment env;
+
+    @Value("${stormpath.application.url}")
+    private String stormpathApplicationUrl;
 
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
@@ -118,7 +122,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
         Client client = stormpathClient();
         stormpathAuthenticationProvider.setClient(client);
-        stormpathAuthenticationProvider.setApplicationRestUrl(Constants.STORMPATH_APPLICATION_URL);
+        stormpathAuthenticationProvider.setApplicationRestUrl(stormpathApplicationUrl);
 
         return stormpathAuthenticationProvider;
     }
