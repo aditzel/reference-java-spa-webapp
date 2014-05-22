@@ -16,9 +16,8 @@
 
 package com.ditzel.dashboard.server.config;
 
+import com.aditzel.springframework.security.web.csrf.CsrfTokenResponseHeaderBindingFilter;
 import com.ditzel.dashboard.server.Constants;
-import com.ditzel.dashboard.server.filter.security.ClientFingerprintSessionBindingFilter;
-import com.ditzel.dashboard.server.filter.security.CsrfTokenRequestBindingFilter;
 import com.ditzel.dashboard.server.security.HttpClientFingerprintHasher;
 import com.stormpath.sdk.client.Client;
 import com.stormpath.spring.security.client.ClientFactory;
@@ -58,12 +57,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        CsrfTokenRequestBindingFilter csrfTokenRequestBindingFilter = csrfTokenRequestBindingFilter();
-        ClientFingerprintSessionBindingFilter clientFingerprintSessionBindingFilter = clientFingerprintSessionBindingFilter();
+        CsrfTokenResponseHeaderBindingFilter csrfFilter = csrfTokenResponseHeaderBindingFilter();
 
         http
-                .addFilterAfter(clientFingerprintSessionBindingFilter, CsrfFilter.class)
-                .addFilterAfter(csrfTokenRequestBindingFilter, ClientFingerprintSessionBindingFilter.class)
+                .addFilterAfter(csrfFilter, CsrfFilter.class)
                 .headers()
                     .cacheControl()
                     .xssProtection()
@@ -93,13 +90,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Bean
-    public CsrfTokenRequestBindingFilter csrfTokenRequestBindingFilter() {
-         return new CsrfTokenRequestBindingFilter();
-    }
-
-    @Bean
-    public ClientFingerprintSessionBindingFilter clientFingerprintSessionBindingFilter() {
-        return new ClientFingerprintSessionBindingFilter();
+    public CsrfTokenResponseHeaderBindingFilter csrfTokenResponseHeaderBindingFilter() {
+         return new CsrfTokenResponseHeaderBindingFilter();
     }
 
     @Bean
