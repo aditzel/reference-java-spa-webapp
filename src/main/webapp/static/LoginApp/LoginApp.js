@@ -14,5 +14,5 @@
  * limitations under the License.
  */
 
-var loginApp = angular.module('LoginApp', []);
+var loginApp = angular.module('LoginApp', ['spring-security-csrf-token-interceptor']);
 
