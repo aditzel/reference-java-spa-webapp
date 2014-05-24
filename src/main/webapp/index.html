@@ -44,13 +44,12 @@
             <input type="password" class="form-control" placeholder="Password" name="password" required
                    data-ng-model="formData.password">
         </div>
-        <input type="hidden" id="_csrf" name="_csrf" data-ng-model="formData._csrf">
         <button class="btn btn-lg btn-primary btn-block" type="submit" ng-disabled="processingLogin">Sign in</button>
     </form>
 </div>
 <script src="/static/bower_components/jquery/dist/jquery.min.js" type="text/javascript"></script>
 <script src="/static/bower_components/angular/angular.min.js" type="text/javascript"></script>
-<script src="/static/bower_components/spring-security-csrf-token-interceptor/src/spring-security-csrf-token-interceptor.js" type="text/javascript"></script>
+<script src="/static/bower_components/spring-security-csrf-token-interceptor/dist/spring-security-csrf-token-interceptor.min.js" type="text/javascript"></script>
 <script src="/static/login.min.js" type="text/javascript"></script>
 </body>
 </html>
