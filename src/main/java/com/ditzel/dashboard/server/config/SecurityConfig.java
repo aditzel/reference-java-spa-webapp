@@ -16,7 +16,7 @@
 
 package com.ditzel.dashboard.server.config;
 
-import com.aditzel.springframework.security.web.csrf.CsrfTokenResponseHeaderBindingFilter;
+import com.allanditzel.springframework.security.web.csrf.CsrfTokenResponseHeaderBindingFilter;
 import com.ditzel.dashboard.server.Constants;
 import com.ditzel.dashboard.server.security.HttpClientFingerprintHasher;
 import com.stormpath.sdk.client.Client;
