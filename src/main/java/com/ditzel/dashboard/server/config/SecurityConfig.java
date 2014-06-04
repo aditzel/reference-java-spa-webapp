@@ -16,14 +16,14 @@
 
 package com.ditzel.dashboard.server.config;
 
+import com.allanditzel.springframework.security.web.csrf.CsrfTokenResponseHeaderBindingFilter;
 import com.ditzel.dashboard.server.Constants;
-import com.ditzel.dashboard.server.filter.security.ClientFingerprintSessionBindingFilter;
-import com.ditzel.dashboard.server.filter.security.CsrfTokenRequestBindingFilter;
 import com.ditzel.dashboard.server.security.HttpClientFingerprintHasher;
 import com.stormpath.sdk.client.Client;
 import com.stormpath.spring.security.client.ClientFactory;
 import com.stormpath.spring.security.provider.StormpathAuthenticationProvider;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
@@ -45,7 +45,10 @@ import org.springframework.security.web.csrf.CsrfFilter;
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
-    Environment env;
+    private Environment env;
+
+    @Value("${stormpath.application.url}")
+    private String stormpathApplicationUrl;
 
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
@@ -54,12 +57,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        CsrfTokenRequestBindingFilter csrfTokenRequestBindingFilter = csrfTokenRequestBindingFilter();
-        ClientFingerprintSessionBindingFilter clientFingerprintSessionBindingFilter = clientFingerprintSessionBindingFilter();
+        CsrfTokenResponseHeaderBindingFilter csrfFilter = csrfTokenResponseHeaderBindingFilter();
 
         http
-                .addFilterAfter(clientFingerprintSessionBindingFilter, CsrfFilter.class)
-                .addFilterAfter(csrfTokenRequestBindingFilter, ClientFingerprintSessionBindingFilter.class)
+                .addFilterAfter(csrfFilter, CsrfFilter.class)
                 .headers()
                     .cacheControl()
                     .xssProtection()
@@ -89,13 +90,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Bean
-    public CsrfTokenRequestBindingFilter csrfTokenRequestBindingFilter() {
-         return new CsrfTokenRequestBindingFilter();
-    }
-
-    @Bean
-    public ClientFingerprintSessionBindingFilter clientFingerprintSessionBindingFilter() {
-        return new ClientFingerprintSessionBindingFilter();
+    public CsrfTokenResponseHeaderBindingFilter csrfTokenResponseHeaderBindingFilter() {
+         return new CsrfTokenResponseHeaderBindingFilter();
     }
 
     @Bean
@@ -118,7 +114,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
         Client client = stormpathClient();
         stormpathAuthenticationProvider.setClient(client);
-        stormpathAuthenticationProvider.setApplicationRestUrl(Constants.STORMPATH_APPLICATION_URL);
+        stormpathAuthenticationProvider.setApplicationRestUrl(stormpathApplicationUrl);
 
         return stormpathAuthenticationProvider;
     }

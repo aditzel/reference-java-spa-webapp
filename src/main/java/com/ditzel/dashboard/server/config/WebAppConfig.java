@@ -35,7 +35,8 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 @Configuration
 @Import({
         PropertyConfig.class,
-        SecurityConfig.class
+        SecurityConfig.class,
+        DatabaseConfig.class
 })
 @EnableWebMvc
 @ComponentScan(basePackages = {"com.ditzel.dashboard.server.controller"})

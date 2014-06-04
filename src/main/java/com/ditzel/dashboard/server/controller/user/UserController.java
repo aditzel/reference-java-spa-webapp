@@ -30,6 +30,7 @@ import com.stormpath.sdk.group.GroupList;
 import com.stormpath.sdk.group.Groups;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -56,6 +57,9 @@ public class UserController {
     @Autowired
     private UserResourceAssembler resourceAssembler;
 
+    @Value("${stormpath.application.url}")
+    private String stormpathApplicationUrl;
+
     @RequestMapping(value = "/current", method = RequestMethod.GET)
     public String redirectToCurrentUser() throws IOException {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -66,7 +70,7 @@ public class UserController {
     @ResponseBody
     public UserResource getUser(@PathVariable("username") String username) {
 
-        Application application = client.getResource(Constants.STORMPATH_APPLICATION_URL, Application.class);
+        Application application = client.getResource(stormpathApplicationUrl, Application.class);
         AccountList accountList = application.getAccounts(where(username().eqIgnoreCase(username)));
 
         Account requestedUser = null;
@@ -88,7 +92,7 @@ public class UserController {
     @RequestMapping(method = RequestMethod.POST, consumes = "application/json;charset=UTF-8", produces = "application/json;charset=UTF-8")
     @ResponseBody
     public UserResource createUser(@RequestBody UserResource userResource) {
-        Application application = client.getResource(Constants.STORMPATH_APPLICATION_URL, Application.class);
+        Application application = client.getResource(stormpathApplicationUrl, Application.class);
         GroupList groupList = application.getGroups(Groups.where(Groups.name().eqIgnoreCase("user")));
         Iterator<Group> iterator = groupList.iterator();
         if (!iterator.hasNext()) {

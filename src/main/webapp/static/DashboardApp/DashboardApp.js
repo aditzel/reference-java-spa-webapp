@@ -26,7 +26,7 @@ angular.element(document).ready(function() {
     });
 });
 
-var dashboardApp = angular.module('DashboardApp', ['ngRoute', 'ui.bootstrap'])
+var dashboardApp = angular.module('DashboardApp', ['ngRoute', 'ui.bootstrap', 'spring-security-csrf-token-interceptor'])
     .run(function(currentUserFactory) {
         currentUserFactory.setCurrentUser(currentUser);
     })
