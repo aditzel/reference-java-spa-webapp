@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.allanditzel.dashboard.server.config;
+package com.allanditzel.dashboard.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

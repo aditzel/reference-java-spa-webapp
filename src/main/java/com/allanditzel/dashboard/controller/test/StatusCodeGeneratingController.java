@@ -1,7 +1,7 @@
-package com.allanditzel.dashboard.server.controller.test;
+package com.allanditzel.dashboard.controller.test;
 
-import com.allanditzel.dashboard.server.exception.AccessNotAllowedException;
-import com.allanditzel.dashboard.server.exception.test.NotAuthenticatedException;
+import com.allanditzel.dashboard.exception.AccessNotAllowedException;
+import com.allanditzel.dashboard.exception.test.NotAuthenticatedException;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 

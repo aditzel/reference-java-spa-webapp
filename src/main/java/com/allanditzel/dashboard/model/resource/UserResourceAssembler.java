@@ -16,7 +16,7 @@
 
 package com.allanditzel.dashboard.model.resource;
 
-import com.allanditzel.dashboard.server.controller.user.UserController;
+import com.allanditzel.dashboard.controller.user.UserController;
 import com.stormpath.sdk.account.Account;
 import com.stormpath.sdk.group.Group;
 import com.stormpath.sdk.group.GroupList;
@@ -26,7 +26,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Facilitates the creation of {@link com.allanditzel.dashboard.model.resource.UserResource} classes for the {@link com.allanditzel.dashboard.server.controller.user.UserController}
+ * Facilitates the creation of {@link com.allanditzel.dashboard.model.resource.UserResource} classes for the {@link com.allanditzel.dashboard.controller.user.UserController}
  * using Stormpath {@link com.stormpath.sdk.account.Account} entities.
  *
  * @author Allan Ditzel

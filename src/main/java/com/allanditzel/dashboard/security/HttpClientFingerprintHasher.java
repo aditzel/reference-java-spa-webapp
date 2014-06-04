@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-package com.allanditzel.dashboard.server.security;
+package com.allanditzel.dashboard.security;
 
-import com.allanditzel.dashboard.server.Constants;
+import com.allanditzel.dashboard.Constants;
 import org.apache.commons.codec.digest.DigestUtils;
 
 import javax.servlet.http.HttpServletRequest;

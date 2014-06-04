@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-package com.allanditzel.dashboard.server.security;
+package com.allanditzel.dashboard.security;
 
-import com.allanditzel.dashboard.server.Constants;
+import com.allanditzel.dashboard.Constants;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.junit.Before;
 import org.junit.Test;
@@ -30,7 +30,7 @@ import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
 /**
- * Test for the {@link com.allanditzel.dashboard.server.security.HttpClientFingerprintHasher} class.
+ * Test for the {@link com.allanditzel.dashboard.security.HttpClientFingerprintHasher} class.
  *
  * @author Allan Ditzel
  * @since 1.0

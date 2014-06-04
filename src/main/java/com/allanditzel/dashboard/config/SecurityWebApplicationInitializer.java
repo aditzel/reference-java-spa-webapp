@@ -14,18 +14,16 @@
  * limitations under the License.
  */
 
-package com.allanditzel.dashboard.server;
+package com.allanditzel.dashboard.config;
+
+import org.springframework.security.web.context.AbstractSecurityWebApplicationInitializer;
 
 /**
- * Convenience class to hold frequently used constants.
+ * Web application initializer that sets up the filter chain in order for spring security to intercept incoming requests.
+ * Works in conjunctin with {@link com.allanditzel.dashboard.config.WebappInitializer}.
  *
  * @author Allan Ditzel
  * @since 1.0
  */
-public class Constants {
-    public static final String USER_AGENT_HEADER = "User-Agent";
-    public static final String USER_AGENT_FINGERPRINT = "_userAgentFingerprint";
-    public static final String CSRF_TOKEN_KEY = "_csrf";
-
-    public static String STORMPATH_API_KEY_LOCATION = System.getProperty("user.home") + "/.stormpath/apiKey.properties";
+public class SecurityWebApplicationInitializer extends AbstractSecurityWebApplicationInitializer {
 }

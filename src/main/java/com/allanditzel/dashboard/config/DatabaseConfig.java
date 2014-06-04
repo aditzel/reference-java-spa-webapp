@@ -1,4 +1,4 @@
-package com.allanditzel.dashboard.server.config;
+package com.allanditzel.dashboard.config;
 
 import com.jolbox.bonecp.BoneCPDataSource;
 import org.flywaydb.core.Flyway;

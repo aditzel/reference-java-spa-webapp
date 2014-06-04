@@ -1,8 +1,8 @@
-package com.allanditzel.dashboard.server.controller.user;
+package com.allanditzel.dashboard.controller.user;
 
 import com.allanditzel.dashboard.model.resource.UserResource;
 import com.allanditzel.dashboard.model.resource.UserResourceAssembler;
-import com.allanditzel.dashboard.server.exception.ApplicationException;
+import com.allanditzel.dashboard.exception.ApplicationException;
 import com.stormpath.sdk.account.Account;
 import com.stormpath.sdk.account.AccountCriteria;
 import com.stormpath.sdk.account.AccountList;

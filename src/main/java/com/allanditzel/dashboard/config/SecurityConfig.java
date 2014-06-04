@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-package com.allanditzel.dashboard.server.config;
+package com.allanditzel.dashboard.config;
 
 import com.allanditzel.springframework.security.web.csrf.CsrfTokenResponseHeaderBindingFilter;
-import com.allanditzel.dashboard.server.Constants;
-import com.allanditzel.dashboard.server.security.HttpClientFingerprintHasher;
+import com.allanditzel.dashboard.Constants;
+import com.allanditzel.dashboard.security.HttpClientFingerprintHasher;
 import com.stormpath.sdk.client.Client;
 import com.stormpath.spring.security.client.ClientFactory;
 import com.stormpath.spring.security.provider.StormpathAuthenticationProvider;

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.allanditzel.dashboard.server.config;
+package com.allanditzel.dashboard.config;
 
 import com.allanditzel.dashboard.model.resource.UserResourceAssembler;
 import org.springframework.context.annotation.Bean;
@@ -39,7 +39,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
         DatabaseConfig.class
 })
 @EnableWebMvc
-@ComponentScan(basePackages = {"com.allanditzel.dashboard.server.controller"})
+@ComponentScan(basePackages = {"com.allanditzel.dashboard.controller"})
 public class WebAppConfig extends WebMvcConfigurerAdapter {
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {

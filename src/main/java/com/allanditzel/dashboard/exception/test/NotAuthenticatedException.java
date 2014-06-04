@@ -1,4 +1,4 @@
-package com.allanditzel.dashboard.server.exception.test;
+package com.allanditzel.dashboard.exception.test;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
