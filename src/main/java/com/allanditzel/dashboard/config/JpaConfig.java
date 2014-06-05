@@ -14,10 +14,10 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 
 /**
- * Created by Allan on 6/4/2014.
+ * Base configuration for JPA related data.
  */
 @Configuration
-@EnableJpaRepositories(basePackages = "com.allanditzel.dashboard.persistence.repository")
+@EnableJpaRepositories(basePackages = "com.allanditzel.dashboard.persistence")
 @EnableTransactionManagement
 public class JpaConfig extends DatabaseConfig {
     @Bean

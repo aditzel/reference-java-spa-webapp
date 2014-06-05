@@ -22,18 +22,18 @@ package com.allanditzel.dashboard.model;
 
 import org.hibernate.annotations.GenericGenerator;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
+@Table(name = "STORMPATH_USER_MAPPING")
 public class StormpathUserMapping {
     @Id
     @GeneratedValue(generator = "system-uuid")
     @GenericGenerator(name = "system-uuid", strategy = "uuid")
     private String id;
-
+    @Column(name = "USERNAME")
     private String username;
+    @Column(name = "STORMPATH_URL")
     private String stormpathUrl;
 
     public StormpathUserMapping() {}

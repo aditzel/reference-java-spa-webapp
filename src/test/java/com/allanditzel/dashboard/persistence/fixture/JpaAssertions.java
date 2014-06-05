@@ -1,4 +1,4 @@
-package com.allanditzel.dashboard.persistence.domain.fixture;
+package com.allanditzel.dashboard.persistence.fixture;
 
 import org.hibernate.Session;
 import org.hibernate.internal.SessionImpl;

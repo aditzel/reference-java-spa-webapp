@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.allanditzel.dashboard.persistence.domain.fixture;
+package com.allanditzel.dashboard.model;
 
 import com.allanditzel.dashboard.config.TestsJpaConfig;
 import org.junit.Test;
@@ -27,8 +27,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 
-import static com.allanditzel.dashboard.persistence.domain.fixture.JpaAssertions.assertTableExists;
-import static com.allanditzel.dashboard.persistence.domain.fixture.JpaAssertions.assertTableHasColumn;
+import static com.allanditzel.dashboard.persistence.fixture.JpaAssertions.assertTableExists;
+import static com.allanditzel.dashboard.persistence.fixture.JpaAssertions.assertTableHasColumn;
 
 /**
  * Integration test for {@link com.allanditzel.dashboard.model.StormpathUserMapping}.
