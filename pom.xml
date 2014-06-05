@@ -29,17 +29,16 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <junit.version>4.11</junit.version>
         <mockito.version>1.9.5</mockito.version>
-        <spring.version>4.0.0.RELEASE</spring.version>
+        <spring.version>4.0.5.RELEASE</spring.version>
         <cglib.version>2.2.2</cglib.version>
         <maven.compiler.plugin.version>3.1</maven.compiler.plugin.version>
         <jrebel.plugin.version>1.1.5</jrebel.plugin.version>
         <logback.version>1.0.13</logback.version>
-        <spring.data.couchbase.version>1.0.0.M2</spring.data.couchbase.version>
-        <spring.security.version>3.2.0.RELEASE</spring.security.version>
+        <spring.security.version>3.2.4.RELEASE</spring.security.version>
         <commons.codec.version>1.9</commons.codec.version>
         <stormpath.sdk.version>0.9.3</stormpath.sdk.version>
         <stormpath.spring.security.version>0.2.0</stormpath.spring.security.version>
-        <spring.hateoas.version>0.9.0.RELEASE</spring.hateoas.version>
+        <spring.hateoas.version>0.12.0.RELEASE</spring.hateoas.version>
         <servlet.version>3.1.0</servlet.version>
         <maven.war.plugin.version>2.4</maven.war.plugin.version>
         <java.target.version>1.8</java.target.version>
@@ -51,6 +50,11 @@
         <bonecp.version>0.8.0.RELEASE</bonecp.version>
         <flyway.version>3.0</flyway.version>
         <spring-csrf-token-filter>1.1</spring-csrf-token-filter>
+        <jackson.version>2.3.3</jackson.version>
+        <spring.data.jpa.version>1.6.0.RELEASE</spring.data.jpa.version>
+        <hibernate.version>4.3.5.Final</hibernate.version>
+        <hibernate-jpa.version>1.0.0.Final</hibernate-jpa.version>
+        <h2-database.version>1.4.178</h2-database.version>
     </properties>
 
     <dependencyManagement>
@@ -112,8 +116,8 @@
             </dependency>
             <dependency>
                 <groupId>org.springframework.data</groupId>
-                <artifactId>spring-data-couchbase</artifactId>
-                <version>${spring.data.couchbase.version}</version>
+                <artifactId>spring-data-jpa</artifactId>
+                <version>${spring.data.jpa.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.springframework.security</groupId>
@@ -179,6 +183,26 @@
                 <groupId>org.flywaydb</groupId>
                 <artifactId>flyway-core</artifactId>
                 <version>${flyway.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.fasterxml.jackson.core</groupId>
+                <artifactId>jackson-databind</artifactId>
+                <version>${jackson.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.hibernate</groupId>
+                <artifactId>hibernate-entitymanager</artifactId>
+                <version>${hibernate.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.hibernate.javax.persistence</groupId>
+                <artifactId>hibernate-jpa-2.1-api</artifactId>
+                <version>${hibernate-jpa.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.h2database</groupId>
+                <artifactId>h2</artifactId>
+                <version>${h2-database.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
@@ -271,6 +295,26 @@
         <dependency>
             <groupId>org.flywaydb</groupId>
             <artifactId>flyway-core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.data</groupId>
+            <artifactId>spring-data-jpa</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-entitymanager</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.hibernate.javax.persistence</groupId>
+            <artifactId>hibernate-jpa-2.1-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
         </dependency>
     </dependencies>
 

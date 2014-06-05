@@ -16,6 +16,7 @@
 
 package com.allanditzel.dashboard.model.resource;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import org.springframework.hateoas.ResourceSupport;
 
 import java.util.HashSet;
@@ -27,24 +28,27 @@ import java.util.Set;
  * @author Allan Ditzel
  * @since 1.0
  */
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class UserResource extends ResourceSupport {
     private String username;
     private String firstName;
     private String lastName;
     private String email;
+    private String password;
     private Set<String> roles;
 
     public UserResource() {
 
     }
 
-    public UserResource(String username, String firstName, String lastName, String email, String... roles) {
+    public UserResource(String username, String firstName, String lastName, String email, String password, String... roles) {
         this.roles = new HashSet<>();
 
         this.username = username;
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
+        this.password = password;
 
         for (String role : roles) {
             addRole(role);
@@ -81,5 +85,25 @@ public class UserResource extends ResourceSupport {
 
     public String getLastName() {
         return lastName;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 }

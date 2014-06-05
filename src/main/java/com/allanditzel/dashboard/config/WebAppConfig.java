@@ -36,10 +36,10 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 @Import({
         PropertyConfig.class,
         SecurityConfig.class,
-        DatabaseConfig.class
+        JpaConfig.class
 })
 @EnableWebMvc
-@ComponentScan(basePackages = {"com.allanditzel.dashboard.controller"})
+@ComponentScan(basePackages = {"com.allanditzel.dashboard"})
 public class WebAppConfig extends WebMvcConfigurerAdapter {
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
