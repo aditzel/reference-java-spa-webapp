@@ -27,6 +27,7 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <junit.version>4.11</junit.version>
         <mockito.version>1.9.5</mockito.version>
         <spring.version>4.0.5.RELEASE</spring.version>
@@ -55,6 +56,7 @@
         <hibernate.version>4.3.5.Final</hibernate.version>
         <hibernate-jpa.version>1.0.0.Final</hibernate-jpa.version>
         <h2-database.version>1.4.178</h2-database.version>
+        <maven-failsafe-plugin.version>2.17</maven-failsafe-plugin.version>
     </properties>
 
     <dependencyManagement>
@@ -369,6 +371,19 @@
                         </fileset>
                     </filesets>
                 </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-failsafe-plugin</artifactId>
+                <version>${maven-failsafe-plugin.version}</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>integration-test</goal>
+                            <goal>verify</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>
