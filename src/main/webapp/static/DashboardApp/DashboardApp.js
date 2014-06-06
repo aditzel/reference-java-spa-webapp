@@ -61,7 +61,8 @@ var dashboardApp = angular.module('DashboardApp', ['ngRoute', 'ui.bootstrap', 's
             },
             responseError: function(response) {
                 if (response.status === 401) {
-                    window.location = "/logout";
+                    $.post('/logout');
+                    window.location = "/";
                 }
                 if (response.status === 403) {
                     $rootScope.$broadcast('operationNotAllowedEvent');
