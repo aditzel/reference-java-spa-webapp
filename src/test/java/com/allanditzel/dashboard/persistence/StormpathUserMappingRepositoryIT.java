@@ -1,17 +1,14 @@
 package com.allanditzel.dashboard.persistence;
 
-import com.allanditzel.dashboard.config.TestsJpaConfig;
+import com.allanditzel.dashboard.config.JpaConfig;
+import com.allanditzel.dashboard.config.PropertyConfig;
 import com.allanditzel.dashboard.model.StormpathUserMapping;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
-import org.springframework.test.context.support.DirtiesContextTestExecutionListener;
 import org.springframework.test.context.transaction.TransactionConfiguration;
-import org.springframework.test.context.transaction.TransactionalTestExecutionListener;
 import org.springframework.transaction.annotation.Transactional;
 
 import static junit.framework.TestCase.assertNull;
@@ -22,12 +19,9 @@ import static org.junit.Assert.assertNotNull;
  * Integration
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = { TestsJpaConfig.class })
+@ContextConfiguration(classes = { JpaConfig.class, PropertyConfig.class})
 @Transactional
-@TransactionConfiguration(transactionManager="transactionManager", defaultRollback = false)
-@TestExecutionListeners({ DependencyInjectionTestExecutionListener.class,
-        DirtiesContextTestExecutionListener.class,
-        TransactionalTestExecutionListener.class})
+@TransactionConfiguration(transactionManager="transactionManager", defaultRollback = true)
 public class StormpathUserMappingRepositoryIT {
     @Autowired
     private StormpathUserMappingRepository repository;

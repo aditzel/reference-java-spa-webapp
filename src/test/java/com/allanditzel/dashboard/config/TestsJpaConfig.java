@@ -30,6 +30,6 @@ public class TestsJpaConfig extends JpaConfig {
     @Override
     public DataSource dataSource() {
         EmbeddedDatabaseBuilder builder = new EmbeddedDatabaseBuilder();
-        return builder.setType(EmbeddedDatabaseType.H2).build();
+        return builder.setType(EmbeddedDatabaseType.HSQL).build();
     }
 }
