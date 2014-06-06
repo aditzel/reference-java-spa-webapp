@@ -2,6 +2,7 @@ package com.allanditzel.dashboard.persistence;
 
 import com.allanditzel.dashboard.config.JpaConfig;
 import com.allanditzel.dashboard.config.PropertyConfig;
+import com.allanditzel.dashboard.config.TestsJpaConfig;
 import com.allanditzel.dashboard.model.StormpathUserMapping;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -19,7 +20,7 @@ import static org.junit.Assert.assertNotNull;
  * Integration
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = { JpaConfig.class, PropertyConfig.class})
+@ContextConfiguration(classes = { TestsJpaConfig.class, PropertyConfig.class})
 @Transactional
 @TransactionConfiguration(transactionManager="transactionManager", defaultRollback = true)
 public class StormpathUserMappingRepositoryIT {

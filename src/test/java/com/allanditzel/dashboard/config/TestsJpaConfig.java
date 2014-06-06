@@ -16,6 +16,8 @@
 
 package com.allanditzel.dashboard.config;
 
+import org.springframework.context.annotation.Bean;
+import org.springframework.jdbc.datasource.TransactionAwareDataSourceProxy;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
 
@@ -28,8 +30,9 @@ public class TestsJpaConfig extends JpaConfig {
 
 
     @Override
+    @Bean
     public DataSource dataSource() {
         EmbeddedDatabaseBuilder builder = new EmbeddedDatabaseBuilder();
-        return builder.setType(EmbeddedDatabaseType.HSQL).build();
+        return new TransactionAwareDataSourceProxy(builder.setType(EmbeddedDatabaseType.H2).build());
     }
 }
