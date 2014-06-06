@@ -12,6 +12,8 @@ work in progress, so it will change over time.
 * jQuery 2
 * AngularJS 
 * Twitter Bootstrap
+* JPA 2.1
+* Hibernate Entity Manager
 
 ## Development Environment Requirements
 
@@ -20,3 +22,4 @@ work in progress, so it will change over time.
 * NodeJS
 * Grunt + Grunt-CLI
 * Bower
+* Account on Stormpath, a Directory with a group called "user" and one called "administrator"

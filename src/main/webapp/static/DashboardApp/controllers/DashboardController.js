@@ -41,6 +41,16 @@ dashboardApp.controller("DashboardController", function($scope, $location, curre
         }
     });
 
+    $scope.logout = function() {
+        $http({method: 'POST', url: '/logout'}).
+            success(function(data, status, headers, config) {
+                window.location = "/index.html";
+            }).
+            error(function(data, status, headers, config) {
+                window.location = "/index.html";
+            });
+    };
+
     $scope.closeAlert = function(index) {
         $scope.alertMessages.splice(index, 1);
     };
