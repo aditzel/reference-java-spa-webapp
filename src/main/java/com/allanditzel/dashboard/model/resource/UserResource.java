@@ -41,7 +41,7 @@ public class UserResource extends ResourceSupport {
 
     }
 
-    public UserResource(String username, String firstName, String lastName, String email, String password, String... roles) {
+    public UserResource(String username, String firstName, String lastName, String email, String password, Set<String> roles) {
         this.roles = new HashSet<>();
 
         this.username = username;
@@ -49,10 +49,7 @@ public class UserResource extends ResourceSupport {
         this.lastName = lastName;
         this.email = email;
         this.password = password;
-
-        for (String role : roles) {
-            addRole(role);
-        }
+        this.roles = roles;
     }
 
     public void addRole(String role) {

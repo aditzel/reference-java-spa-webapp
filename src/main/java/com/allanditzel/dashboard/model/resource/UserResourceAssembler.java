@@ -17,6 +17,7 @@
 package com.allanditzel.dashboard.model.resource;
 
 import com.allanditzel.dashboard.controller.user.UserController;
+import com.allanditzel.dashboard.model.User;
 import com.stormpath.sdk.account.Account;
 import com.stormpath.sdk.group.Group;
 import com.stormpath.sdk.group.GroupList;
@@ -32,27 +33,18 @@ import java.util.List;
  * @author Allan Ditzel
  * @since 1.0
  */
-public class UserResourceAssembler extends ResourceAssemblerSupport<Account, UserResource> {
+public class UserResourceAssembler extends ResourceAssemblerSupport<User, UserResource> {
     public UserResourceAssembler() {
         super(UserController.class, UserResource.class);
     }
 
     @Override
-    public UserResource toResource(Account entity) {
-        UserResource resource = createResourceWithId(entity.getUsername(), entity);
-
-        return resource;
+    public UserResource toResource(User entity) {
+        return createResourceWithId(entity.getUsername(), entity);
     }
 
     @Override
-    protected UserResource instantiateResource(Account entity) {
-        GroupList groups = entity.getGroups();
-        List<String> groupNames = new ArrayList<>();
-
-        for (Group group : groups) {
-            groupNames.add(group.getName().toLowerCase());
-        }
-
-        return new UserResource(entity.getUsername(), entity.getGivenName(), entity.getSurname(), entity.getEmail(), null, groupNames.toArray(new String[groupNames.size()]));
+    protected UserResource instantiateResource(User entity) {
+        return new UserResource(entity.getUsername(), entity.getFirstName(), entity.getLastName(), entity.getEmail(), null, entity.getRoles());
     }
 }

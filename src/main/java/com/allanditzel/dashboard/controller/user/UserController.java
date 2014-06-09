@@ -16,30 +16,21 @@
 
 package com.allanditzel.dashboard.controller.user;
 
+import com.allanditzel.dashboard.exception.UnknownResourceException;
+import com.allanditzel.dashboard.model.User;
 import com.allanditzel.dashboard.model.resource.UserResource;
 import com.allanditzel.dashboard.model.resource.UserResourceAssembler;
-import com.allanditzel.dashboard.exception.ApplicationException;
-import com.allanditzel.dashboard.exception.UnknownResourceException;
-import com.stormpath.sdk.account.Account;
-import com.stormpath.sdk.account.AccountList;
-import com.stormpath.sdk.application.Application;
-import com.stormpath.sdk.client.Client;
-import com.stormpath.sdk.group.Group;
-import com.stormpath.sdk.group.GroupList;
-import com.stormpath.sdk.group.Groups;
-import org.apache.commons.lang3.RandomStringUtils;
+import com.allanditzel.dashboard.security.CurrentUser;
+import com.allanditzel.dashboard.security.Role;
+import com.allanditzel.dashboard.service.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
-import java.util.Iterator;
-
-import static com.stormpath.sdk.account.Accounts.username;
-import static com.stormpath.sdk.account.Accounts.where;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Exposes {@link com.allanditzel.dashboard.model.resource.UserResource} via a HATEOAS compliant REST API.
@@ -51,67 +42,46 @@ import static com.stormpath.sdk.account.Accounts.where;
 @Controller
 public class UserController {
     @Autowired
-    private Client client;
+    private UserService userService;
 
     @Autowired
     private UserResourceAssembler resourceAssembler;
 
-    @Value("${stormpath.application.url}")
-    private String stormpathApplicationUrl;
-
     @RequestMapping(value = "/current", method = RequestMethod.GET)
-    public String redirectToCurrentUser() throws IOException {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        return "redirect:/api/user/" + authentication.getName();
+    public String redirectToCurrentUser(@CurrentUser UsernamePasswordAuthenticationToken authentication) throws IOException {
+        String username = authentication.getName();
+        User user = userService.getByUsername(username);
+        if (user == null) {
+            throw new UnknownResourceException("Could not find the current user.");
+        }
+
+        return "redirect:/api/user/" + user.getId();
     }
 
-    @RequestMapping(value = "{username}", method = RequestMethod.GET)
+    @RequestMapping(value = "{id}", method = RequestMethod.GET)
     @ResponseBody
-    public UserResource getUser(@PathVariable("username") String username) {
+    public UserResource getUser(@PathVariable("id") String id) {
+        User user = userService.getById(id);
 
-        Application application = client.getResource(stormpathApplicationUrl, Application.class);
-        AccountList accountList = application.getAccounts(where(username().eqIgnoreCase(username)));
-
-        Account requestedUser = null;
-
-        for (Account account : accountList) {
-            if (account.getUsername().equals(username)) {
-                requestedUser = account;
-                break;
-            }
-        }
-
-        if (requestedUser == null) {
-            throw new UnknownResourceException("Specified user [" + username + "] not found.");
-        }
-
-        return resourceAssembler.toResource(requestedUser);
+        return resourceAssembler.toResource(user);
     }
 
     @RequestMapping(method = RequestMethod.POST, consumes = "application/json;charset=UTF-8", produces = "application/json;charset=UTF-8")
     @ResponseBody
     public UserResource createUser(@RequestBody UserResource userResource) {
-        Application application = client.getResource(stormpathApplicationUrl, Application.class);
-        GroupList groupList = application.getGroups(Groups.where(Groups.name().eqIgnoreCase("user")));
-        Iterator<Group> iterator = groupList.iterator();
-        if (!iterator.hasNext()) {
-            throw new ApplicationException("Could not find group 'user' to add " + userResource.getEmail() + " to.");
-        }
-        Group userGroup = iterator.next();
-        Account newAccount = createNewAccountInstanceWithRandomPassword(userResource);
-        newAccount = application.createAccount(newAccount);
-        newAccount.addGroup(userGroup);
-        newAccount.save();
-        return resourceAssembler.toResource(newAccount);
+        User newUser = createUserFromResouce(userResource);
+        newUser = userService.createUser(newUser);
+
+        return resourceAssembler.toResource(newUser);
     }
 
-    protected Account createNewAccountInstanceWithRandomPassword(UserResource userResource) {
-        Account newAccount = client.instantiate(Account.class);
-        newAccount.setGivenName(userResource.getFirstName());
-        newAccount.setSurname(userResource.getLastName());
-        newAccount.setUsername(userResource.getUsername());
-        newAccount.setEmail(userResource.getEmail());
-        newAccount.setPassword(RandomStringUtils.random(64, true, true));
-        return  newAccount;
+    protected User createUserFromResouce(UserResource userResource) {
+        User user = new User();
+        user.setFirstName(userResource.getFirstName());
+        user.setLastName(userResource.getLastName());
+        user.setEmail(userResource.getEmail());
+        user.setPassword(userResource.getPassword());
+
+        return user;
     }
 }

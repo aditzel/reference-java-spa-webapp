@@ -16,9 +16,9 @@
 
 package com.allanditzel.dashboard.config;
 
+import com.allanditzel.dashboard.security.handler.LocalUserPersistingAuthenticationSuccessHandler;
 import com.allanditzel.springframework.security.web.csrf.CsrfTokenResponseHeaderBindingFilter;
 import com.allanditzel.dashboard.Constants;
-import com.allanditzel.dashboard.security.HttpClientFingerprintHasher;
 import com.stormpath.sdk.client.Client;
 import com.stormpath.spring.security.client.ClientFactory;
 import com.stormpath.spring.security.provider.StormpathAuthenticationProvider;
@@ -77,6 +77,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .formLogin()
                     .loginPage("/index.html")
                     .defaultSuccessUrl("/home.html", true)
+                    .successHandler(localUserPersistingAuthenticationSuccessHandler())
                     .failureHandler(new SimpleUrlAuthenticationFailureHandler())
                     .permitAll()
                     .and()
@@ -92,11 +93,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean
     public CsrfTokenResponseHeaderBindingFilter csrfTokenResponseHeaderBindingFilter() {
          return new CsrfTokenResponseHeaderBindingFilter();
-    }
-
-    @Bean
-    public HttpClientFingerprintHasher httpClientFingerprintHasher() {
-        return new HttpClientFingerprintHasher();
     }
 
     @Bean
@@ -117,5 +113,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         stormpathAuthenticationProvider.setApplicationRestUrl(stormpathApplicationUrl);
 
         return stormpathAuthenticationProvider;
+    }
+
+    @Bean
+    public LocalUserPersistingAuthenticationSuccessHandler localUserPersistingAuthenticationSuccessHandler(){
+        return new LocalUserPersistingAuthenticationSuccessHandler();
     }
 }

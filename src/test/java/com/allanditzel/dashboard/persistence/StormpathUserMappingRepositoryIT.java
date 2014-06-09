@@ -20,7 +20,7 @@ import static org.junit.Assert.assertNotNull;
  * Integration
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = { TestsJpaConfig.class, PropertyConfig.class})
+@ContextConfiguration(classes = { JpaConfig.class, PropertyConfig.class})
 @Transactional
 @TransactionConfiguration(transactionManager="transactionManager", defaultRollback = true)
 public class StormpathUserMappingRepositoryIT {
