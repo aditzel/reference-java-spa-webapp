@@ -16,6 +16,7 @@
 
 package com.allanditzel.dashboard.controller.user;
 
+import com.allanditzel.dashboard.exception.UnknownResourceException;
 import com.allanditzel.dashboard.model.User;
 import com.allanditzel.dashboard.model.resource.UserResource;
 import com.allanditzel.dashboard.model.resource.UserResourceAssembler;
@@ -48,7 +49,13 @@ public class UserController {
 
     @RequestMapping(value = "/current", method = RequestMethod.GET)
     public String redirectToCurrentUser(@CurrentUser UsernamePasswordAuthenticationToken authentication) throws IOException {
-        return "redirect:/api/user/" + authentication.getName();
+        String username = authentication.getName();
+        User user = userService.getByUsername(username);
+        if (user == null) {
+            throw new UnknownResourceException("Could not find the current user.");
+        }
+
+        return "redirect:/api/user/" + user.getId();
     }
 
     @RequestMapping(value = "{id}", method = RequestMethod.GET)

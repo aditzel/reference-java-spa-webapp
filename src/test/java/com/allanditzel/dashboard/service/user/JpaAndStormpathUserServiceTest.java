@@ -5,6 +5,7 @@ import com.allanditzel.dashboard.exception.UnknownResourceException;
 import com.allanditzel.dashboard.model.StormpathUserMapping;
 import com.allanditzel.dashboard.model.User;
 import com.allanditzel.dashboard.persistence.StormpathUserMappingRepository;
+import com.allanditzel.dashboard.service.account.AccountService;
 import com.stormpath.sdk.account.Account;
 import com.stormpath.sdk.application.Application;
 import com.stormpath.sdk.client.Client;
@@ -39,13 +40,13 @@ public class JpaAndStormpathUserServiceTest {
     private JpaAndStormpathUserService service;
 
     @Mock
-    private Client stormpathClient;
-
-    @Mock
     private StormpathUserMappingRepository userMappingRepo;
 
     @Mock
     private StormpathUserMapping mapping;
+
+    @Mock
+    private AccountService accountService;
 
     @Mock
     private Account account;
@@ -65,9 +66,8 @@ public class JpaAndStormpathUserServiceTest {
     @Before
     public void setUp() throws Exception {
         service = new JpaAndStormpathUserService();
-        ReflectionTestUtils.setField(service, "client", stormpathClient);
-        ReflectionTestUtils.setField(service, "stormpathApplicationUrl", STORMPATH_APP_URL);
         ReflectionTestUtils.setField(service, "userMappingRepo", userMappingRepo);
+        ReflectionTestUtils.setField(service, "accountService", accountService);
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -95,7 +95,7 @@ public class JpaAndStormpathUserServiceTest {
 
         when(userMappingRepo.findOne(validId)).thenReturn(mapping);
         when(mapping.getStormpathUrl()).thenReturn(STORMPATH_USER_URL);
-        when(stormpathClient.getResource(STORMPATH_USER_URL, Account.class)).thenReturn(null);
+        when(accountService.getAccountByUrl(STORMPATH_USER_URL)).thenReturn(null);
 
         service.getById(validId);
     }
@@ -106,13 +106,13 @@ public class JpaAndStormpathUserServiceTest {
 
         when(userMappingRepo.findOne(validId)).thenReturn(mapping);
         when(mapping.getStormpathUrl()).thenReturn(STORMPATH_USER_URL);
-        when(stormpathClient.getResource(STORMPATH_USER_URL, Account.class)).thenReturn(account);
+        when(accountService.getAccountByUrl(STORMPATH_USER_URL)).thenReturn(account);
 
         service.getById(validId);
 
         verify(userMappingRepo).findOne(validId);
         verify(mapping).getStormpathUrl();
-        verify(stormpathClient).getResource(STORMPATH_USER_URL, Account.class);
+        verify(accountService).getAccountByUrl(STORMPATH_USER_URL);
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -140,13 +140,13 @@ public class JpaAndStormpathUserServiceTest {
 
         when(userMappingRepo.findByStormpathUrlIgnoreCase(href)).thenReturn(mapping);
         when(mapping.getStormpathUrl()).thenReturn(STORMPATH_USER_URL);
-        when(stormpathClient.getResource(STORMPATH_USER_URL, Account.class)).thenReturn(account);
+        when(accountService.getAccountByUrl(STORMPATH_USER_URL)).thenReturn(account);
 
         service.getByHref(href);
 
         verify(userMappingRepo).findByStormpathUrlIgnoreCase(href);
         verify(mapping).getStormpathUrl();
-        verify(stormpathClient).getResource(STORMPATH_USER_URL, Account.class);
+        verify(accountService).getAccountByUrl(STORMPATH_USER_URL);
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -174,13 +174,13 @@ public class JpaAndStormpathUserServiceTest {
 
         when(userMappingRepo.findByUsernameIgnoreCase(username)).thenReturn(mapping);
         when(mapping.getStormpathUrl()).thenReturn(STORMPATH_USER_URL);
-        when(stormpathClient.getResource(STORMPATH_USER_URL, Account.class)).thenReturn(account);
+        when(accountService.getAccountByUrl(STORMPATH_USER_URL)).thenReturn(account);
 
         service.getByUsername(username);
 
         verify(userMappingRepo).findByUsernameIgnoreCase(username);
         verify(mapping).getStormpathUrl();
-        verify(stormpathClient).getResource(STORMPATH_USER_URL, Account.class);
+        verify(accountService).getAccountByUrl(STORMPATH_USER_URL);
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -189,11 +189,10 @@ public class JpaAndStormpathUserServiceTest {
     }
 
     @Test(expected = ApplicationException.class)
-    public void shouldThrowApplicationExceptionIfUserGroupNotFound() {
-        User user = createTestUser();
-        setUpStormpathClientAndGroups();
+    public void shouldThrowApplicationExceptionIfUnableToCreateUserInStormpath() {
+        User user = new User();
 
-        when(groupIterator.hasNext()).thenReturn(false);
+        when(accountService.createAccountFromUser(any(User.class))).thenReturn(null);
 
         service.createUser(user);
     }
@@ -201,40 +200,25 @@ public class JpaAndStormpathUserServiceTest {
     @Test
     public void shouldCreateUser() {
         User user = createTestUser();
-        setUpStormpathClientAndGroups();
 
-        when(groupIterator.hasNext()).thenReturn(true);
-        when(groupIterator.next()).thenReturn(group);
-        when(application.createAccount(account)).thenReturn(account);
+        when(accountService.createAccountFromUser(any(User.class))).thenReturn(account);
         when(account.getUsername()).thenReturn(USERNAME);
         when(account.getHref()).thenReturn(STORMPATH_USER_URL);
         when(userMappingRepo.save(any(StormpathUserMapping.class))).thenReturn(mapping);
         when(mapping.getId()).thenReturn(ID);
 
-        service.createUser(user);
+        user = service.createUser(user);
+        assertNotNull(user);
+        assertEquals(ID, user.getId());
 
-        verify(stormpathClient).instantiate(Account.class);
-        verify(stormpathClient).getResource(STORMPATH_APP_URL, Application.class);
-        verify(application).getGroups(any(GroupCriteria.class));
-        verify(groupList).iterator();
-        verify(groupIterator).hasNext();
-        verify(groupIterator).next();
-        verify(application).createAccount(account);
+        verify(accountService).createAccountFromUser(any(User.class));
         verify(account).getUsername();
         verify(account).getHref();
         verify(userMappingRepo).save(any(StormpathUserMapping.class));
         verify(mapping).getId();
     }
 
-    private void setUpStormpathClientAndGroups() {
-        when(stormpathClient.instantiate(Account.class)).thenReturn(account);
-        when(stormpathClient.getResource(STORMPATH_APP_URL, Application.class)).thenReturn(application);
-        when(application.getGroups(any(GroupCriteria.class))).thenReturn(groupList);
-        when(groupList.iterator()).thenReturn(groupIterator);
-    }
-
     private User createTestUser() {
-
         User user = new User();
         user.setUsername(USERNAME);
         user.setEmail(EMAIL);

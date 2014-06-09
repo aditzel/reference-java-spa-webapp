@@ -1,5 +1,6 @@
 package com.allanditzel.dashboard.controller.user;
 
+import com.allanditzel.dashboard.exception.UnknownResourceException;
 import com.allanditzel.dashboard.model.User;
 import com.allanditzel.dashboard.model.resource.UserResource;
 import com.allanditzel.dashboard.model.resource.UserResourceAssembler;
@@ -13,6 +14,7 @@ import com.stormpath.sdk.client.Client;
 import com.stormpath.sdk.group.Group;
 import com.stormpath.sdk.group.GroupCriteria;
 import com.stormpath.sdk.group.GroupList;
+import com.sun.org.apache.bcel.internal.classfile.Unknown;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.Before;
 import org.junit.Ignore;
@@ -30,7 +32,9 @@ import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
+import java.io.IOException;
 import java.nio.charset.Charset;
+import java.security.UnrecoverableKeyException;
 import java.util.Iterator;
 
 import static org.junit.Assert.assertEquals;
@@ -86,12 +90,31 @@ public class UserControllerTest {
         ReflectionTestUtils.setField(userController, "userService", userService);
     }
 
+    @Test(expected = UnknownResourceException.class)
+    public void shouldThrowUnknownResourceExceptionIfCurrentUserCannotBeFound() throws IOException {
+        String username = "username";
+        String password = "password";
+        UsernamePasswordAuthenticationToken currentUser = new UsernamePasswordAuthenticationToken(username, password);
+        when(userService.getByUsername(username)).thenReturn(null);
+
+        userController.redirectToCurrentUser(currentUser);
+    }
+
     @Test
     public void shouldReturnRedirectView() throws Exception {
-        String expectedRedirectView = "redirect:/api/user/username";
-        UsernamePasswordAuthenticationToken currentUser = new UsernamePasswordAuthenticationToken("username", "password");
+        String username = "username";
+        String password = "password";
+        String id = "id";
+        String expectedRedirectView = "redirect:/api/user/" + id;
+        UsernamePasswordAuthenticationToken currentUser = new UsernamePasswordAuthenticationToken(username, password);
+        when(userService.getByUsername(username)).thenReturn(user);
+        when(user.getId()).thenReturn(id);
+
         String redirectView = userController.redirectToCurrentUser(currentUser);
         assertEquals(expectedRedirectView, redirectView);
+
+        verify(userService).getByUsername(username);
+        verify(user).getId();
     }
 
     @Test
