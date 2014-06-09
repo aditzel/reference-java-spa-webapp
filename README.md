@@ -14,6 +14,7 @@ work in progress, so it will change over time.
 * Twitter Bootstrap
 * JPA 2.1
 * Hibernate Entity Manager
+* MariaDB as the JPA backing data store
 
 ## Development Environment Requirements
 
@@ -23,3 +24,4 @@ work in progress, so it will change over time.
 * Grunt + Grunt-CLI
 * Bower
 * Account on Stormpath, a Directory with a group called "user" and one called "administrator"
+* MariaDB installed. Look at default.properties for db name and credential information."
