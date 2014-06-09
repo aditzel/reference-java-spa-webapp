@@ -18,7 +18,6 @@ package com.allanditzel.dashboard.config;
 
 import com.allanditzel.springframework.security.web.csrf.CsrfTokenResponseHeaderBindingFilter;
 import com.allanditzel.dashboard.Constants;
-import com.allanditzel.dashboard.security.HttpClientFingerprintHasher;
 import com.stormpath.sdk.client.Client;
 import com.stormpath.spring.security.client.ClientFactory;
 import com.stormpath.spring.security.provider.StormpathAuthenticationProvider;
@@ -92,11 +91,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean
     public CsrfTokenResponseHeaderBindingFilter csrfTokenResponseHeaderBindingFilter() {
          return new CsrfTokenResponseHeaderBindingFilter();
-    }
-
-    @Bean
-    public HttpClientFingerprintHasher httpClientFingerprintHasher() {
-        return new HttpClientFingerprintHasher();
     }
 
     @Bean
