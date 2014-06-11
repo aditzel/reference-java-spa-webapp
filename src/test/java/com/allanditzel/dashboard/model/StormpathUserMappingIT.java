@@ -16,14 +16,9 @@
 
 package com.allanditzel.dashboard.model;
 
-import com.allanditzel.dashboard.config.TestsJpaConfig;
+import com.allanditzel.dashboard.test.AbstractDaoTest;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.transaction.TransactionConfiguration;
-import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 
@@ -33,15 +28,11 @@ import static com.allanditzel.dashboard.persistence.fixture.JpaAssertions.assert
 /**
  * Integration test for {@link com.allanditzel.dashboard.model.StormpathUserMapping}.
  */
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = { TestsJpaConfig.class })
-@Transactional
-@TransactionConfiguration(defaultRollback = true)
-public class StormpathUserMappingIT {
-    private static final String STORMPATH_USER_MAPPING_TABLE = "STORMPATH_USER_MAPPING";
-    private static final String ID_COLUMN = "ID";
-    private static final String USERNAME_COLUMN = "USERNAME";
-    private static final String STORMPATH_URL_COLUMN = "STORMPATH_URL";
+public class StormpathUserMappingIT extends AbstractDaoTest {
+    private static final String STORMPATH_USER_MAPPING_TABLE = "stormpath_user_mapping";
+    private static final String ID_COLUMN = "entity_id";
+    private static final String USERNAME_COLUMN = "user_name";
+    private static final String STORMPATH_URL_COLUMN = "stormpath_url";
 
     @Autowired
     private EntityManager entityManager;

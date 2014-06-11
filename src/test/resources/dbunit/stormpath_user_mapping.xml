@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE dataset SYSTEM "C:\Development\oss\reference-java-spa-webapp\src\test\resources\dbunit\schema.dtd">
+<dataset>
+    <stormpath_user_mapping entity_id="test-1" user_name="aditzel" stormpath_url="http://example.com"/>
+    <stormpath_user_mapping entity_id="test-2" user_name="bturner" stormpath_url="http://test.com"/>
+</dataset>
