@@ -76,7 +76,7 @@ public class DatabaseConnectionFactory {
 
         DatabaseConfig configuration = connection.getConfig();
         configuration.setProperty(DatabaseConfig.PROPERTY_DATATYPE_FACTORY, dataTypeFactory);
-        configuration.setProperty(DatabaseConfig.FEATURE_CASE_SENSITIVE_TABLE_NAMES, Boolean.TRUE);
+        //configuration.setProperty(DatabaseConfig.FEATURE_CASE_SENSITIVE_TABLE_NAMES, Boolean.TRUE);
 
         return connection;
     }

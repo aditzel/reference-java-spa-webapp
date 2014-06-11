@@ -1,6 +1,7 @@
 package com.allanditzel.dashboard.test.dbunit;
 
 import com.allanditzel.dashboard.test.AbstractDaoTest;
+import com.google.common.collect.Collections2;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
@@ -20,10 +21,10 @@ import java.util.Map;
  * {@code FlatDtdWriter} to produce an XML DTD describing the schema. The emitted DTD can then be used in the DbUnit
  * XML datasets to ensure the table and column names used are correct, and to get auto-complete assistance from IDEs
  * during development.
- * <p/>
+ * <p>
  * This "test" can be run from your editor of choice, and will write the schema DTD to {@code stash-schema.dtd} in
  * the working directory.
- * <p/>
+ * <p>
  * Note: The lower-casing classes nested here are designed around the {@code FlatDtdWriter}. They apply lowercase
  * conversions to the names of elements based on the methods the DTD writer actually calls on {@code IDataSet}. That
  * means there are still code paths in them which will return names in their actual case. They're not intended to be
@@ -70,11 +71,15 @@ public class SchemaDtdGenerator extends AbstractDaoTest {
             this.delegate = delegate;
 
             tableNames = Maps.newHashMap();
-            names = Iterables.toArray(Lists.transform(Arrays.asList(delegate.getTableNames()), name -> {
-                tableNames.put(name.toLowerCase(), name);
+            names = Iterables.toArray(Collections2.transform(
+                    //Filter out Flyway's schema_version table; we should never populate that
+                    Collections2.filter(Arrays.asList(delegate.getTableNames()), s -> !"schema_version".equalsIgnoreCase(s)),
+                    //Map out the lowercase names to their original casing for metadata lookup later
+                    name -> {
+                        tableNames.put(name.toLowerCase(), name);
 
-                return name.toLowerCase();
-            }), String.class);
+                        return name.toLowerCase();
+                    }), String.class);
         }
 
         @Override

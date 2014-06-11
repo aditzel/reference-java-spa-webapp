@@ -25,7 +25,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.io.ClassPathResource;
+import org.springframework.context.annotation.Primary;
 import org.springframework.jdbc.datasource.TransactionAwareDataSourceProxy;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
@@ -58,14 +58,26 @@ public class TestsJpaConfig extends JpaConfig {
     }
 
     @Bean
-    public TestExecutionListener listeners() {
+    @Primary
+    public TestExecutionListener listeners() throws Exception {
         return new ChainTestExecutionListener(ImmutableList.of(
                 new DependencyInjectionTestExecutionListener(),
-                new DaoTestExecutionListener(applicationContext),
+                daoTestExecutionListener(),
                 new DirtiesContextTestExecutionListener(),
                 new TransactionalTestExecutionListener(),
-                new DataSetTestExecutionListener(databaseConnectionFactory(), entityManagerFactory(),
-                        new ClassPathResource("dbunit/schema.dtd"))
-        ));
+                dataSetTestExecutionListener())
+        );
+    }
+
+    private DaoTestExecutionListener daoTestExecutionListener() {
+        return new DaoTestExecutionListener(applicationContext);
+    }
+
+    private DataSetTestExecutionListener dataSetTestExecutionListener() throws Exception {
+        DataSetTestExecutionListener listener = new DataSetTestExecutionListener(databaseConnectionFactory(),
+                entityManagerFactory(), applicationContext.getResource("classpath:dbunit/schema.dtd"));
+        listener.createDataSetBuilder();
+
+        return listener;
     }
 }

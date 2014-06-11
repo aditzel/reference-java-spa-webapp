@@ -10,7 +10,6 @@ import org.dbunit.dataset.xml.FlatDtdDataSet;
 import org.dbunit.dataset.xml.FlatXmlDataSetBuilder;
 import org.dbunit.operation.DatabaseOperation;
 import org.hibernate.Cache;
-import org.springframework.beans.factory.InitializingBean;
 import org.springframework.context.ApplicationContext;
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.core.io.Resource;
@@ -18,6 +17,7 @@ import org.springframework.core.io.ResourceLoader;
 import org.springframework.test.context.TestContext;
 import org.springframework.test.context.support.AbstractTestExecutionListener;
 
+import javax.annotation.PostConstruct;
 import javax.persistence.EntityManagerFactory;
 import java.io.IOException;
 import java.lang.reflect.Method;
@@ -32,7 +32,7 @@ import java.util.Arrays;
  * @author Bryan Turner
  * @since 1.0
  */
-public class DataSetTestExecutionListener extends AbstractTestExecutionListener implements InitializingBean {
+public class DataSetTestExecutionListener extends AbstractTestExecutionListener {
 
     private final DatabaseConnectionFactory connectionFactory;
     private final Resource dtdResource;
@@ -52,24 +52,6 @@ public class DataSetTestExecutionListener extends AbstractTestExecutionListener 
         this.connectionFactory = connectionFactory;
         this.dtdResource = dtdResource;
         this.entityManagerFactory = entityManagerFactory;
-    }
-
-    /**
-     * Creates the {@link com.allanditzel.dashboard.test.spring.DataSetTestExecutionListener.DataSetBuilder} which will be used to transform Spring {@code Resource}s into DbUnit
-     * {@code IDataSet} implementations. If a DTD {@code Resource} was supplied during construction, the builder
-     * will use that DTD to provide metadata when constructing {@code IDataSet}s. Otherwise, it will attempt to
-     * "sense" that metadata from the XML used as input.
-     *
-     * @throws DataSetException if the DTD resource cannot be transformed into an {@code IDataSet}
-     * @throws java.io.IOException if a stream cannot be opened from the DTD resource
-     */
-    @Override
-    public void afterPropertiesSet() throws DataSetException, IOException {
-        if (dtdResource == null) {
-            dataSetBuilder = new NoDtdDataSetBuilder();
-        } else {
-            dataSetBuilder = new DtdDataSetBuilder(new FlatDtdDataSet(dtdResource.getInputStream()));
-        }
     }
 
     /**
@@ -118,6 +100,24 @@ public class DataSetTestExecutionListener extends AbstractTestExecutionListener 
         DataSet annotation = getDataSetAnnotation(testContext);
         if (annotation != null && annotation.insert()) {
             applyAnnotation(testContext, annotation, DatabaseOperation.INSERT, false);
+        }
+    }
+
+    /**
+     * Creates the {@link DataSetBuilder} which will be used to transform Spring {@code Resource}s into DbUnit
+     * {@code IDataSet} implementations. If a DTD {@code Resource} was supplied during construction, the builder
+     * will use that DTD to provide metadata when constructing {@code IDataSet}s. Otherwise, it will attempt to
+     * "sense" that metadata from the XML used as input.
+     *
+     * @throws DataSetException if the DTD resource cannot be transformed into an {@code IDataSet}
+     * @throws java.io.IOException if a stream cannot be opened from the DTD resource
+     */
+    @PostConstruct
+    public void createDataSetBuilder() throws DataSetException, IOException {
+        if (dtdResource == null) {
+            dataSetBuilder = new NoDtdDataSetBuilder();
+        } else {
+            dataSetBuilder = new DtdDataSetBuilder(new FlatDtdDataSet(dtdResource.getInputStream()));
         }
     }
 

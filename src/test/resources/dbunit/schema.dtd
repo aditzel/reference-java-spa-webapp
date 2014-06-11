@@ -1,26 +1,10 @@
 <!ELEMENT dataset (
-   (stormpath_user_mapping|
-    schema_version)*)>
+   (stormpath_user_mapping)*)>
 
 <!ELEMENT stormpath_user_mapping EMPTY>
 <!ATTLIST stormpath_user_mapping
     entity_id CDATA #REQUIRED
     user_name CDATA #REQUIRED
     stormpath_url CDATA #REQUIRED
->
-
-<!ELEMENT schema_version EMPTY>
-<!ATTLIST schema_version
-    version_rank CDATA #REQUIRED
-    installed_rank CDATA #REQUIRED
-    version CDATA #REQUIRED
-    description CDATA #REQUIRED
-    type CDATA #REQUIRED
-    script CDATA #REQUIRED
-    checksum CDATA #IMPLIED
-    installed_by CDATA #REQUIRED
-    installed_on CDATA #IMPLIED
-    execution_time CDATA #REQUIRED
-    success CDATA #REQUIRED
 >
 
