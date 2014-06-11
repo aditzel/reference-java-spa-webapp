@@ -1,30 +1,16 @@
 package com.allanditzel.dashboard.persistence;
 
-import com.allanditzel.dashboard.config.JpaConfig;
-import com.allanditzel.dashboard.config.PropertyConfig;
-import com.allanditzel.dashboard.config.TestsJpaConfig;
 import com.allanditzel.dashboard.model.StormpathUserMapping;
+import com.allanditzel.dashboard.test.AbstractDaoTest;
+import com.allanditzel.dashboard.test.annotation.Dao;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.transaction.TransactionConfiguration;
-import org.springframework.transaction.annotation.Transactional;
-
-import static junit.framework.TestCase.assertNull;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
 
 /**
  * Integration
  */
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = { JpaConfig.class, PropertyConfig.class})
-@Transactional
-@TransactionConfiguration(transactionManager="transactionManager", defaultRollback = true)
-public class StormpathUserMappingRepositoryIT {
-    @Autowired
+public class StormpathUserMappingRepositoryIT extends AbstractDaoTest {
+
+    @Dao
     private StormpathUserMappingRepository repository;
 
     @Test

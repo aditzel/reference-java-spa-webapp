@@ -30,10 +30,9 @@ import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 @Configuration
 @PropertySource("classpath:default.properties")
 public class PropertyConfig {
+
     @Bean
     public static PropertySourcesPlaceholderConfigurer placeHolderConfigurer() {
-        PropertySourcesPlaceholderConfigurer propertyConfigurer = new PropertySourcesPlaceholderConfigurer();
-
-        return propertyConfigurer;
+        return new PropertySourcesPlaceholderConfigurer();
     }
 }

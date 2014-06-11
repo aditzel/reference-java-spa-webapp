@@ -20,6 +20,7 @@ import javax.persistence.EntityManagerFactory;
 @EnableJpaRepositories(basePackages = "com.allanditzel.dashboard.persistence")
 @EnableTransactionManagement
 public class JpaConfig extends DatabaseConfig {
+
     @Bean
     public EntityManagerFactory entityManagerFactory() {
         HibernateJpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
@@ -43,6 +44,7 @@ public class JpaConfig extends DatabaseConfig {
     @Bean
     public PlatformTransactionManager transactionManager() {
         JpaTransactionManager txManager = new JpaTransactionManager();
+        txManager.setDataSource(dataSource());
         txManager.setEntityManagerFactory(entityManagerFactory());
         return txManager;
     }

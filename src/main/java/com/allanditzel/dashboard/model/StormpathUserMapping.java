@@ -16,27 +16,32 @@
 
 package com.allanditzel.dashboard.model;
 
-/**
- * Entity class designed to keep track of Stormpath specific data in order to mask its use.
- */
-
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 
+/**
+ * Entity class designed to keep track of Stormpath specific data in order to mask its use.
+ */
 @Entity
-@Table(name = "STORMPATH_USER_MAPPING")
+@Table(name = "stormpath_user_mapping", indexes = {
+        @Index(name = "idx_spum_username", columnList = "user_name"),
+        @Index(name = "idx_spum_url", columnList = "stormpath_url"),
+})
 public class StormpathUserMapping {
+
+    @Column(name = "entity_id", nullable = false, unique = true)
     @Id
     @GeneratedValue(generator = "system-uuid")
     @GenericGenerator(name = "system-uuid", strategy = "uuid")
     private String id;
-    @Column(name = "USERNAME")
+    @Column(name = "user_name")
     private String username;
-    @Column(name = "STORMPATH_URL")
+    @Column(name = "stormpath_url")
     private String stormpathUrl;
 
-    public StormpathUserMapping() {}
+    @SuppressWarnings("unused") //Required for proxying
+    protected StormpathUserMapping() {}
 
     public StormpathUserMapping(String username, String stormpathUrl) {
         this.username = username;
