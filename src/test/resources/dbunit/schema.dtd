@@ -1,0 +1,10 @@
+<!ELEMENT dataset (
+   (stormpath_user_mapping)*)>
+
+<!ELEMENT stormpath_user_mapping EMPTY>
+<!ATTLIST stormpath_user_mapping
+    entity_id CDATA #REQUIRED
+    user_name CDATA #REQUIRED
+    stormpath_url CDATA #REQUIRED
+>
+

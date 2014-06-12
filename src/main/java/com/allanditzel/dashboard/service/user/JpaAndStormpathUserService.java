@@ -49,13 +49,11 @@ public class JpaAndStormpathUserService implements UserService {
     @Override
     public User createUser(User user) {
         Assert.notNull(user, "User parameter cannot be null.");
-        StormpathUserMapping mapping = new StormpathUserMapping();
         Account account = accountService.createAccountFromUser(user);
         if (account == null) {
             throw new ApplicationException("Could not create user " + user.getUsername() + " in Stormpath.");
         }
-        mapping.setUsername(account.getUsername());
-        mapping.setStormpathUrl(account.getHref());
+        StormpathUserMapping mapping = new StormpathUserMapping(account.getUsername(), account.getHref());
         mapping = userMappingRepo.save(mapping);
         user.setId(mapping.getId());
 

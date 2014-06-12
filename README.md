@@ -20,8 +20,11 @@ work in progress, so it will change over time.
 
 * Java 8
 * Maven 3
-* NodeJS
+* NodeJS + NPMs
 * Grunt + Grunt-CLI
 * Bower
 * Account on Stormpath, a Directory with a group called "user" and one called "administrator"
-* MariaDB installed. Look at default.properties for db name and credential information."
+
+## Credits
+
+Many thanks to [Bryan Turner](https://github.com/bturner) for the awesome dbunit testing contributions!
