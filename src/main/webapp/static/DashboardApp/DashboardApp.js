@@ -22,6 +22,7 @@ var currentUser;
 angular.element(document).ready(function() {
     $.get('/api/user/current', function(data) {
         currentUser = data;
+        console.log(currentUser);
         angular.bootstrap(document, ['DashboardApp']);
     });
 });
@@ -83,7 +84,7 @@ var dashboardApp = angular.module('DashboardApp', ['ngRoute', 'ui.bootstrap', 's
                     var hasRole = false;
 
                     for (var i = 0 ; i < currentUser.roles.length; i++) {
-                        if (currentUser.roles[i] === requiredRole) {
+                        if (currentUser.roles[i].toLowerCase() === requiredRole) {
                             hasRole = true;
                             break;
                         }

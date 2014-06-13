@@ -12,6 +12,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * JPA and Stormpath specific implementation of {@link com.allanditzel.dashboard.service.user.UserService}.
  *
@@ -60,6 +63,35 @@ public class JpaAndStormpathUserService implements UserService {
         return user;
     }
 
+    @Override
+    public List<User> getAllUsers() {
+        List<User> users = new ArrayList<>();
+        List<Account> accounts = accountService.getAllAccounts();
+
+        for (Account account : accounts) {
+            users.add(getUser(account));
+        }
+
+        return users;
+    }
+
+    /**
+     * Returns a {@link com.allanditzel.dashboard.model.User} object for the given Stormpath {@code Account}.
+     *
+     * @param account the Stormpath account we want a {@link com.allanditzel.dashboard.model.User} for
+     * @return the {@link com.allanditzel.dashboard.model.User} representing the Stormpath {@code Account}.
+     */
+    private User getUser(Account account) {
+        Assert.notNull(account, "Account object cannot be null.");
+        UserBuilder userBuilder = new UserBuilder();
+        StormpathUserMapping mapping = userMappingRepo.findByUsernameIgnoreCase(account.getUsername());
+        if (mapping == null) {
+            mapping = new StormpathUserMapping(account.getUsername(), account.getHref());
+            mapping = userMappingRepo.save(mapping);
+        }
+
+        return userBuilder.addStormpathAccount(account).addStormpathUserMapping(mapping).build();
+    }
 
     private User getUser(StormpathUserMapping mapping) {
         if (mapping == null) {

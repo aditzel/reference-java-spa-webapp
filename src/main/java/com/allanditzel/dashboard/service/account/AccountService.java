@@ -3,6 +3,8 @@ package com.allanditzel.dashboard.service.account;
 import com.allanditzel.dashboard.model.User;
 import com.stormpath.sdk.account.Account;
 
+import java.util.List;
+
 /**
  * Service for {@link com.stormpath.sdk.account.Account} specific operations.
  *
@@ -14,4 +16,6 @@ public interface AccountService {
     Account getAccountByUrl(String url);
 
     Account createAccountFromUser(User user);
+
+    List<Account> getAllAccounts();
 }
