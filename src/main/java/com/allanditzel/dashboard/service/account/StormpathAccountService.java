@@ -12,11 +12,14 @@ import com.stormpath.sdk.client.Client;
 import com.stormpath.sdk.group.Group;
 import com.stormpath.sdk.group.GroupList;
 import com.stormpath.sdk.group.Groups;
+import com.stormpath.sdk.lang.Assert;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
 /**
  * Stormpath spcific implementation of {@link com.allanditzel.dashboard.service.account.AccountService}
@@ -31,26 +34,25 @@ public class StormpathAccountService implements AccountService {
 
     @Override
     public Account getAccountByUsername(String username) {
+        Assert.hasText(username);
+        Account account = null;
         Application application = client.getResource(stormpathApplicationUrl, Application.class);
-        AccountList accountList = application.getAccounts(Accounts.where(Accounts.username().eqIgnoreCase(username)));
+        if (application != null) {
+            AccountList accountList = application.getAccounts(Accounts.where(Accounts.username().eqIgnoreCase(username)));
 
-        Iterator<Account> iterator = accountList.iterator();
-        if (iterator == null || !iterator.hasNext()) {
-            throw new UnknownResourceException("Cannot find Account in Stormpath with the specified username " + username);
+            Iterator<Account> iterator = accountList.iterator();
+            if (iterator != null && iterator.hasNext()) {
+                account = iterator.next();
+            }
         }
 
-        return iterator.next();
+        return account;
     }
 
     @Override
     public Account getAccountByUrl(String url) {
-        Account account = client.getResource(url, Account.class);
-
-        if (account == null) {
-            throw new UnknownResourceException("Specified user does not exist in Stormpath.");
-        }
-
-        return account;
+        Assert.hasText(url);
+        return client.getResource(url, Account.class);
     }
 
     @Override
@@ -74,5 +76,20 @@ public class StormpathAccountService implements AccountService {
         account.addGroup(userGroup);
 
         return account;
+    }
+
+    @Override
+    public List<Account> getAllAccounts() {
+        Application application = client.getResource(stormpathApplicationUrl, Application.class);
+        AccountList accountList = application.getAccounts();
+        List<Account> accounts = new ArrayList<>();
+
+        if (accountList != null) {
+            for (Account account : accountList) {
+                accounts.add(account);
+            }
+        }
+
+        return accounts;
     }
 }

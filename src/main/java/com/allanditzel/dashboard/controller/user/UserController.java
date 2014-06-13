@@ -29,7 +29,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
+import java.util.Collections;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -46,6 +48,12 @@ public class UserController {
 
     @Autowired
     private UserResourceAssembler resourceAssembler;
+
+    @RequestMapping(method = RequestMethod.GET)
+    @ResponseBody
+    public List<UserResource> getAllUsers() {
+        return Collections.emptyList();
+    }
 
     @RequestMapping(value = "/current", method = RequestMethod.GET)
     public String redirectToCurrentUser(@CurrentUser UsernamePasswordAuthenticationToken authentication) throws IOException {
