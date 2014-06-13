@@ -35,7 +35,10 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.security.UnrecoverableKeyException;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
+import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -143,6 +146,40 @@ public class UserControllerTest {
         verify(resourceAssembler).toResource(user);
     }
 
+    @Test
+    public void shouldReturnEmptyListIfUserServiceReturnsEmptyList() {
+        List<User> users = Collections.emptyList();
+        List<UserResource> userResources = Collections.emptyList();
+
+        when(userService.getAllUsers()).thenReturn(users);
+        when(resourceAssembler.toResources(users)).thenReturn(userResources);
+
+        List<UserResource> actualUserResources = userController.getAllUsers();
+        assertNotNull(actualUserResources);
+        assertEquals(0, actualUserResources.size());
+
+        verify(userService).getAllUsers();
+        verify(resourceAssembler).toResources(users);
+    }
+
+    @Test
+    public void shouldReturnPopulatedListOfUserResources() {
+        List<User> users = new ArrayList<>();
+        users.add(getUser());
+        List<UserResource> userResources = new ArrayList<>();
+        userResources.add(getUserResource());
+
+        when(userService.getAllUsers()).thenReturn(users);
+        when(resourceAssembler.toResources(users)).thenReturn(userResources);
+
+        List<UserResource> actualUserResources = userController.getAllUsers();
+        assertNotNull(actualUserResources);
+        assertEquals(1, actualUserResources.size());
+
+        verify(userService).getAllUsers();
+        verify(resourceAssembler).toResources(users);
+    }
+
     private UserResource getUserResource() {
         UserResource resource = new UserResource();
         resource.setFirstName(FIRST_NAME);
@@ -151,5 +188,15 @@ public class UserControllerTest {
         resource.setPassword(PASSWORD);
 
         return resource;
+    }
+
+    private User getUser() {
+        User user = new User();
+        user.setUsername(EMAIL);
+        user.setFirstName(FIRST_NAME);
+        user.setLastName(LAST_NAME);
+        user.setEmail(EMAIL);
+
+        return user;
     }
 }

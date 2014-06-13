@@ -52,7 +52,7 @@ public class UserController {
     @RequestMapping(method = RequestMethod.GET)
     @ResponseBody
     public List<UserResource> getAllUsers() {
-        return Collections.emptyList();
+        return resourceAssembler.toResources(userService.getAllUsers());
     }
 
     @RequestMapping(value = "/current", method = RequestMethod.GET)
