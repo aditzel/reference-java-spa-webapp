@@ -22,7 +22,6 @@ var currentUser;
 angular.element(document).ready(function() {
     $.get('/api/user/current', function(data) {
         currentUser = data;
-        console.log(currentUser);
         angular.bootstrap(document, ['DashboardApp']);
     });
 });
@@ -99,7 +98,8 @@ var dashboardApp = angular.module('DashboardApp', ['ngRoute', 'ui.bootstrap', 's
     })
     .factory('eventMessageFactory', function() {
         var messages = {
-            operationNotAllowedEvent: 'You are not allowed to perform that operation.'
+            operationNotAllowedEvent: 'You are not allowed to perform that operation.',
+            errorRetrievingUsers: 'There was an error retrieving all the users.'
         };
 
         return {

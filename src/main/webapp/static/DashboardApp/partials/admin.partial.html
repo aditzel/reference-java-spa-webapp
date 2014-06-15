@@ -20,13 +20,15 @@
         <thead>
             <tr>
                 <td>Username</td>
-                <td>Groups</td>
+                <td>Email</td>
+                <td>Roles</td>
             </tr>
         </thead>
         <tbody>
-            <tr>
-                <td>aditzel</td>
-                <td>administrator, user</td>
+            <tr data-ng-repeat="user in allUsers">
+                <td>{{ user.username }}</td>
+                <td>{{ user.email }}</td>
+                <td>{{ user.roles }}</td>
             </tr>
         </tbody>
     </table>

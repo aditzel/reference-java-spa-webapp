@@ -14,6 +14,17 @@
  * limitations under the License.
  */
 
-dashboardApp.controller("AdminController", function($scope) {
+dashboardApp.controller("AdminController", function($scope, $http) {
+    $scope.allUsers = {};
 
+    $scope.getAllUsers = function() {
+        // temporarily specifying full url until this is abstracted into a system config factory
+        $http({method: 'GET', url: 'https://localhost:8443/api/user'}).success(function(result) {
+            $scope.allUsers = result;
+        }).error(function() {
+            console.log("Something went wrong", arguments);
+        });
+    };
+
+    $scope.getAllUsers();
 });
