@@ -52,7 +52,7 @@
         <flyway.version>3.0</flyway.version>
         <spring-csrf-token-filter>1.1</spring-csrf-token-filter>
         <jackson.version>2.3.3</jackson.version>
-        <spring.data.jpa.version>1.6.0.RELEASE</spring.data.jpa.version>
+        <spring.data.jpa.version>1.11.23.RELEASE</spring.data.jpa.version>
         <hibernate.version>4.3.5.Final</hibernate.version>
         <hibernate-jpa.version>1.0.0.Final</hibernate-jpa.version>
         <h2-database.version>1.4.178</h2-database.version>
