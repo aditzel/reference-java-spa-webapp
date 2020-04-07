@@ -51,7 +51,7 @@
         <bonecp.version>0.8.0.RELEASE</bonecp.version>
         <flyway.version>3.0</flyway.version>
         <spring-csrf-token-filter>1.1</spring-csrf-token-filter>
-        <jackson.version>2.3.3</jackson.version>
+        <jackson.version>2.9.10.3</jackson.version>
         <spring.data.jpa.version>1.11.23.RELEASE</spring.data.jpa.version>
         <hibernate.version>4.3.5.Final</hibernate.version>
         <hibernate-jpa.version>1.0.0.Final</hibernate-jpa.version>
