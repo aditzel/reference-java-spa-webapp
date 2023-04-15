@@ -57,7 +57,7 @@
         <hibernate-jpa.version>1.0.0.Final</hibernate-jpa.version>
         <h2-database.version>1.4.178</h2-database.version>
         <maven-failsafe-plugin.version>2.17</maven-failsafe-plugin.version>
-        <hsql-database.version>2.3.2</hsql-database.version>
+        <hsql-database.version>2.7.1</hsql-database.version>
     </properties>
 
     <dependencyManagement>
